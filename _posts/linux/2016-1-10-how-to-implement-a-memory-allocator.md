@@ -27,11 +27,11 @@ categories: linux
 
 ![](http://i.imgur.com/EZOz5mv.png)
 
-### 4. 关键代码：
+### 4. 关键代码
 
 1.堆初始化时对Prologue和Epilogue进行初始化
-```c
 
+```c
 if ((heap_listp = mem_sbrk(4*WSIZE)) == NULL)
   return -1;
 PUT(heap_listp, 0);/* alignment padding */
@@ -39,11 +39,11 @@ PUT(heap_listp+WSIZE, PACK(OVERHEAD, 1));  /* prologue header */
 PUT(heap_listp+DSIZE, PACK(OVERHEAD, 1));  /* prologue footer */
 PUT(heap_listp+WSIZE+DSIZE, PACK(0, 1));   /* epilogue header */
 heap_listp += DSIZE;
-
 ```
-2.malloc时先对链表进行线性查找find_fit，时间复杂度O(N)
-```c
 
+2.malloc时先对链表进行线性查找find_fit，时间复杂度O(N)
+
+```c
 for(bp = heap_listp; GET_SIZE(HDRP(bp)) != 0; bp = NEXT_BLKP(bp))
 {
 	if(!GET_ALLOC(HDRP(bp)) && size <= GET_SIZE(HDRP(bp)) )
@@ -59,8 +59,7 @@ for(bp = heap_listp; GET_SIZE(HDRP(bp)) != 0; bp = NEXT_BLKP(bp))
 
 5.释放块空间（free）时将只需将header和footer的标志位设为1，然后考虑合并（coalesce），如下：
 
-```
-
+```c
 if(!GET_ALLOC(HDRP(next_bp)))
 {
 	size_t total_size=GET_SIZE(HDRP(bp))+GET_SIZE(HDRP(next_bp));
@@ -87,9 +86,10 @@ if(!GET_ALLOC(HDRP(pre_bp)))
 
 ![](http://i.imgur.com/RMrvCSB.png)
 
-BST代码如下(其中原来的first-fit被注释)：
-```c
+BST代码如下(其中原来的first-fit被注释)
 
+
+```c
 /*
  * mm-naive.c - The fastest, least memory-efficient malloc package.
  *
@@ -110,8 +110,8 @@ BST代码如下(其中原来的first-fit被注释)：
 #include "memlib.h"
 
 /*********************************************************
- * mail:yf.future@gmail.com
- * author: yyff
+ * mail: yangfan036@gmail.com
+ * author: c0ks
  ********************************************************/
 
 /*********************************************************

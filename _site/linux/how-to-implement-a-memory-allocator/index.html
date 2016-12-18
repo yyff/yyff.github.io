@@ -179,23 +179,23 @@
 
 <p><img src="http://i.imgur.com/EZOz5mv.png" alt="" /></p>
 
-<h3 id="4-关键代码">4. 关键代码：</h3>
+<h3 id="4-关键代码">4. 关键代码</h3>
 
 <p>1.堆初始化时对Prologue和Epilogue进行初始化</p>
-<div class="language-c highlighter-rouge"><pre class="highlight"><code>
-<span class="k">if</span> <span class="p">((</span><span class="n">heap_listp</span> <span class="o">=</span> <span class="n">mem_sbrk</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">WSIZE</span><span class="p">))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="p">((</span><span class="n">heap_listp</span> <span class="o">=</span> <span class="n">mem_sbrk</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">WSIZE</span><span class="p">))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
   <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
 <span class="n">PUT</span><span class="p">(</span><span class="n">heap_listp</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span><span class="cm">/* alignment padding */</span>
 <span class="n">PUT</span><span class="p">(</span><span class="n">heap_listp</span><span class="o">+</span><span class="n">WSIZE</span><span class="p">,</span> <span class="n">PACK</span><span class="p">(</span><span class="n">OVERHEAD</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>  <span class="cm">/* prologue header */</span>
 <span class="n">PUT</span><span class="p">(</span><span class="n">heap_listp</span><span class="o">+</span><span class="n">DSIZE</span><span class="p">,</span> <span class="n">PACK</span><span class="p">(</span><span class="n">OVERHEAD</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>  <span class="cm">/* prologue footer */</span>
 <span class="n">PUT</span><span class="p">(</span><span class="n">heap_listp</span><span class="o">+</span><span class="n">WSIZE</span><span class="o">+</span><span class="n">DSIZE</span><span class="p">,</span> <span class="n">PACK</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>   <span class="cm">/* epilogue header */</span>
 <span class="n">heap_listp</span> <span class="o">+=</span> <span class="n">DSIZE</span><span class="p">;</span>
-
 </code></pre>
 </div>
+
 <p>2.malloc时先对链表进行线性查找find_fit，时间复杂度O(N)</p>
-<div class="language-c highlighter-rouge"><pre class="highlight"><code>
-<span class="k">for</span><span class="p">(</span><span class="n">bp</span> <span class="o">=</span> <span class="n">heap_listp</span><span class="p">;</span> <span class="n">GET_SIZE</span><span class="p">(</span><span class="n">HDRP</span><span class="p">(</span><span class="n">bp</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">bp</span> <span class="o">=</span> <span class="n">NEXT_BLKP</span><span class="p">(</span><span class="n">bp</span><span class="p">))</span>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="n">bp</span> <span class="o">=</span> <span class="n">heap_listp</span><span class="p">;</span> <span class="n">GET_SIZE</span><span class="p">(</span><span class="n">HDRP</span><span class="p">(</span><span class="n">bp</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">bp</span> <span class="o">=</span> <span class="n">NEXT_BLKP</span><span class="p">(</span><span class="n">bp</span><span class="p">))</span>
 <span class="p">{</span>
 	<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">GET_ALLOC</span><span class="p">(</span><span class="n">HDRP</span><span class="p">(</span><span class="n">bp</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="n">GET_SIZE</span><span class="p">(</span><span class="n">HDRP</span><span class="p">(</span><span class="n">bp</span><span class="p">))</span> <span class="p">)</span>
 		<span class="k">return</span> <span class="n">bp</span><span class="p">;</span>
@@ -210,20 +210,19 @@
 
 <p>5.释放块空间（free）时将只需将header和footer的标志位设为1，然后考虑合并（coalesce），如下：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>
-if(!GET_ALLOC(HDRP(next_bp)))
-{
-	size_t total_size=GET_SIZE(HDRP(bp))+GET_SIZE(HDRP(next_bp));
-	PUT(HDRP(bp), PACK(total_size, 0));
-	PUT(FTRP(next_bp), PACK(total_size, 0));
-}
-if(!GET_ALLOC(HDRP(pre_bp)))
-{
-	size_t total_size=GET_SIZE(HDRP(pre_bp))+GET_SIZE(HDRP(bp));
-	PUT(HDRP(pre_bp), PACK(total_size, 0));
-	PUT(FTRP(bp), PACK(total_size, 0));
-	return pre_bp;
-}
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">GET_ALLOC</span><span class="p">(</span><span class="n">HDRP</span><span class="p">(</span><span class="n">next_bp</span><span class="p">)))</span>
+<span class="p">{</span>
+	<span class="kt">size_t</span> <span class="n">total_size</span><span class="o">=</span><span class="n">GET_SIZE</span><span class="p">(</span><span class="n">HDRP</span><span class="p">(</span><span class="n">bp</span><span class="p">))</span><span class="o">+</span><span class="n">GET_SIZE</span><span class="p">(</span><span class="n">HDRP</span><span class="p">(</span><span class="n">next_bp</span><span class="p">));</span>
+	<span class="n">PUT</span><span class="p">(</span><span class="n">HDRP</span><span class="p">(</span><span class="n">bp</span><span class="p">),</span> <span class="n">PACK</span><span class="p">(</span><span class="n">total_size</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+	<span class="n">PUT</span><span class="p">(</span><span class="n">FTRP</span><span class="p">(</span><span class="n">next_bp</span><span class="p">),</span> <span class="n">PACK</span><span class="p">(</span><span class="n">total_size</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">GET_ALLOC</span><span class="p">(</span><span class="n">HDRP</span><span class="p">(</span><span class="n">pre_bp</span><span class="p">)))</span>
+<span class="p">{</span>
+	<span class="kt">size_t</span> <span class="n">total_size</span><span class="o">=</span><span class="n">GET_SIZE</span><span class="p">(</span><span class="n">HDRP</span><span class="p">(</span><span class="n">pre_bp</span><span class="p">))</span><span class="o">+</span><span class="n">GET_SIZE</span><span class="p">(</span><span class="n">HDRP</span><span class="p">(</span><span class="n">bp</span><span class="p">));</span>
+	<span class="n">PUT</span><span class="p">(</span><span class="n">HDRP</span><span class="p">(</span><span class="n">pre_bp</span><span class="p">),</span> <span class="n">PACK</span><span class="p">(</span><span class="n">total_size</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+	<span class="n">PUT</span><span class="p">(</span><span class="n">FTRP</span><span class="p">(</span><span class="n">bp</span><span class="p">),</span> <span class="n">PACK</span><span class="p">(</span><span class="n">total_size</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+	<span class="k">return</span> <span class="n">pre_bp</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre>
 </div>
 
@@ -238,9 +237,9 @@ if(!GET_ALLOC(HDRP(pre_bp)))
 
 <p><img src="http://i.imgur.com/RMrvCSB.png" alt="" /></p>
 
-<p>BST代码如下(其中原来的first-fit被注释)：</p>
-<div class="language-c highlighter-rouge"><pre class="highlight"><code>
-<span class="cm">/*
+<p>BST代码如下(其中原来的first-fit被注释)</p>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="cm">/*
  * mm-naive.c - The fastest, least memory-efficient malloc package.
  *
  * In this naive approach, a block is allocated by simply incrementing
@@ -260,8 +259,8 @@ if(!GET_ALLOC(HDRP(pre_bp)))
 #include "memlib.h"
 </span>
 <span class="cm">/*********************************************************
- * mail:yf.future@gmail.com
- * author: yyff
+ * mail: yangfan036@gmail.com
+ * author: c0ks
  ********************************************************/</span>
 
 <span class="cm">/*********************************************************
