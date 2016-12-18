@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>POJ 1703 • c0ks'S TECH BLOG</title>
+    <meta name="description" content="
+  并查集（具体类别未知的划分）
+
+
+">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="POJ 1703">
+	<meta name="twitter:description" content="
+  并查集（具体类别未知的划分）
+
+
+">
+	
+	
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/logo.jpg">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="POJ 1703">
+	<meta property="og:description" content="
+  并查集（具体类别未知的划分）
+
+
+">
+	<meta property="og:url" content="http://localhost:4000/algorithm/POJ-1703/">
+	<meta property="og:site_name" content="c0ks'S TECH BLOG">
+
+    <link rel="canonical" href="http://localhost:4000/algorithm/POJ-1703/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="c0ks'S TECH BLOG Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">c0ks'S TECH BLOG</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">c0ks'S TECH BLOG</a></li>
+	
+    
+    <li><a href="http://localhost:4000/" >Home</a></li>
+  
+    
+    <li><a href="http://localhost:4000/language/" >Language</a></li>
+  
+    
+    <li><a href="http://localhost:4000/linux/" >Linux</a></li>
+  
+    
+    <li><a href="http://localhost:4000/algorithm/" >Algorithm</a></li>
+  
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>c0ks'S TECH BLOG <span></span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/">
+        
+        <div class="title">Home</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/language/">
+        
+        <div class="title">Language</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/linux/">
+        
+        <div class="title">Linux</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/algorithm/">
+        
+        <div class="title">Algorithm</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/about/">
+        
+        <div class="title">About Me</div>
+        
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/algorithm/" itemprop="url">
+        <span itemprop="title">Algorithm</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>POJ 1703</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<blockquote>
+  <p>并查集（具体类别未知的划分）</p>
+</blockquote>
+
+<h2 id="题意">题意</h2>
+<p>一个城市里有两个帮派，</p>
+<ol>
+  <li>（A [a] [b] ）为已知信息，表示a和b属于不同帮派，但不知a和b具体属于哪个帮派。</li>
+  <li>（D [a] [b] ）判断a和b是否属于一个帮派或未知。</li>
+</ol>
+
+<h2 id="题解">题解</h2>
+<p>使用和挑战程序设计竞赛书中P89类似的并查集(58行处使用cin输入会导致超时)。</p>
+
+<ol>
+  <li>匪徒人数为N，帮派数为2。则给每个人i创建2个元素i-A（用i表示）和i-B（用i+N表示）,即一个长度为2*N的一维数组。（i-A表示i属于帮派A）</li>
+  <li>每个并查集中的元素表示集合内元素代表的情况要么同时发生，要么都不发生。</li>
+  <li>i和j属于同一类则操作： unite(i, j)和unite(i+N, j+N),表示ij要么都属于A，要么都属于B</li>
+  <li>i和j不属于同一类则操作  ：  unite(i, j+N)和unite(i+N, j)</li>
+  <li>判断i和j属于同一类等价于判断same(i,j)或same(i+N, j+N)是否成立</li>
+  <li>不同类则判断same(i, j + N)或same(j, i + N)是否成立</li>
+</ol>
+
+<h2 id="代码">代码</h2>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">const</span> <span class="kt">int</span> <span class="n">MAXN</span> <span class="o">=</span> <span class="mi">100000</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">64</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">parent</span><span class="p">[</span><span class="n">MAXN</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">height</span><span class="p">[</span><span class="n">MAXN</span><span class="p">];</span>
+<span class="kt">void</span> <span class="nf">init</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">parent</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+		<span class="n">height</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">find</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+	<span class="k">else</span>
+		<span class="k">return</span> <span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]);</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">unite</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">x</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+	<span class="n">y</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span>
+		<span class="k">return</span> <span class="p">;</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">height</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">height</span><span class="p">[</span><span class="n">y</span><span class="p">])</span>
+		<span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+	<span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">height</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="n">height</span><span class="p">[</span><span class="n">y</span><span class="p">])</span>
+	<span class="p">{</span>
+		<span class="n">parent</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+		<span class="n">height</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">else</span>
+		<span class="n">parent</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">bool</span> <span class="nf">same</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">return</span> <span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">find</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">T</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">N</span><span class="p">,</span><span class="n">M</span><span class="p">;</span>
+	<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">T</span><span class="p">;</span>
+	<span class="k">while</span> <span class="p">(</span><span class="n">T</span><span class="o">--</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kt">int</span> <span class="n">N</span><span class="p">,</span> <span class="n">M</span><span class="p">;</span>
+		<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">N</span> <span class="o">&gt;&gt;</span> <span class="n">M</span><span class="p">;</span>
+		<span class="n">init</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
+		<span class="n">getchar</span><span class="p">();</span>
+		<span class="k">while</span> <span class="p">(</span><span class="n">M</span><span class="o">--</span><span class="p">)</span>
+		<span class="p">{</span>
+            <span class="kt">char</span> <span class="n">temp</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+			<span class="n">scanf</span><span class="p">(</span><span class="s">"%c%d%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">temp</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">);</span>  <span class="c1">//这里用cin会超时
+</span>			<span class="n">getchar</span><span class="p">();</span>
+			<span class="k">switch</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">case</span> <span class="sc">'D'</span><span class="p">:</span>
+					<span class="n">unite</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">N</span><span class="p">);</span>
+					<span class="n">unite</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">N</span><span class="p">);</span>
+					<span class="k">break</span><span class="p">;</span>
+				<span class="k">case</span> <span class="sc">'A'</span><span class="p">:</span>
+					<span class="k">if</span><span class="p">(</span><span class="n">same</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+						<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"In the same gang."</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+					<span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">same</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">same</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">N</span><span class="p">))</span>
+						<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"In different gangs."</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+					<span class="k">else</span>
+						<span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="s">"Not sure yet."</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+					<span class="k">break</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+</code></pre>
+</div>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/logo.jpg" alt="c0ks">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" > <span itemprop="author">c0ks</span></h3>
+	<p class="author-bio"></p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=POJ%201703&amp;url=http://localhost:4000/algorithm/POJ-1703/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i>  Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/algorithm/POJ-1703/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i>  Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/algorithm/POJ-1703/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i>  Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p> <time datetime="2016-01-28T00:00:00Z" itemprop="datePublished">January 28, 2016</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="http://localhost:4000" ></a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2016 <a href="http://localhost:4000">c0ks'S TECH BLOG</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+  </body>
+
+</html>

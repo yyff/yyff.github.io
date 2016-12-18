@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>c++ primer读书笔记--第十三章 复制控制 • c0ks'S TECH BLOG</title>
+    <meta name="description" content="
+  本系列文章是关于我的c++ primer读书笔记
+
+
+">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="c++ primer读书笔记--第十三章 复制控制">
+	<meta name="twitter:description" content="
+  本系列文章是关于我的c++ primer读书笔记
+
+
+">
+	
+	
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/logo.jpg">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="c++ primer读书笔记--第十三章 复制控制">
+	<meta property="og:description" content="
+  本系列文章是关于我的c++ primer读书笔记
+
+
+">
+	<meta property="og:url" content="http://localhost:4000/language/c++-primer-note-chapter13/">
+	<meta property="og:site_name" content="c0ks'S TECH BLOG">
+
+    <link rel="canonical" href="http://localhost:4000/language/c++-primer-note-chapter13/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="c0ks'S TECH BLOG Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">c0ks'S TECH BLOG</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">c0ks'S TECH BLOG</a></li>
+	
+    
+    <li><a href="http://localhost:4000/" >Home</a></li>
+  
+    
+    <li><a href="http://localhost:4000/language/" >Language</a></li>
+  
+    
+    <li><a href="http://localhost:4000/linux/" >Linux</a></li>
+  
+    
+    <li><a href="http://localhost:4000/algorithm/" >Algorithm</a></li>
+  
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>c0ks'S TECH BLOG <span></span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/">
+        
+        <div class="title">Home</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/language/">
+        
+        <div class="title">Language</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/linux/">
+        
+        <div class="title">Linux</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/algorithm/">
+        
+        <div class="title">Algorithm</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/about/">
+        
+        <div class="title">About Me</div>
+        
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/language/" itemprop="url">
+        <span itemprop="title">Language</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>c++ primer读书笔记--第十三章 复制控制</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<blockquote>
+  <p>本系列文章是关于我的c++ primer读书笔记</p>
+</blockquote>
+
+<p>当<strong>定义一个新类型</strong>的时候，需要显式或隐式地<strong>指定复制、赋值和撤销该类型的对象时会发生什么</strong>——这是通过<strong>定义</strong>特殊成员：<strong>复制构造函数</strong>、<strong>赋值操作符</strong>和<strong>析构函</strong>数来达到的。</p>
+
+<p><strong>复制构造函数</strong>是一种特殊构造函数，具有单个形参，该形参（常用 const 修饰）是对该类类型的引用。<strong>当定义一个新对象并用一个同类型的对象对它进行初始化时，将显式使用复制构造函数</strong>。  <strong>当将该类型的对象传递给函数或函数返回该类型的对象时，将隐式使用复制构造函数。</strong></p>
+
+<p><strong>析构函数</strong>是构造函数的互补：<strong>当对象超出作用域或动态分配的对象被删除时，将自动应用析构函数</strong>。<strong>析构函数可用于释放对象时构造或在对象的生命期中所获取的资源。</strong></p>
+
+<p>复制构造函数、赋值操作符和析构函数总称为复制控制。
+有一种特别常见的情况需要类定义自己的复制控制成员的：类具有指针成员。</p>
+
+<h2 id="复制构造函数">复制构造函数</h2>
+
+<p><strong>只有单个形参，而且该形参是对本类类型对象的引用（常用 const 修饰），这样的构造函数称为复制构造函数。</strong>
+复制构造函数可用于： 
+•   根据另一个同类型的对象显式或隐式初始化一个对象。 
+•   复制一个对象，将它作为实参传给一个函数。 
+•   从函数返回时复制一个对象。 
+•   初始化顺序容器中的元素。 
+•   根据元素初始化式列表初始化数组元素。</p>
+
+<p><strong>对象的定义形式</strong>：
+C++ 支持两种初始化形式（第 2.3.3 节）：直接初始化和复制初始化。复制初始化使用 =符号，而直接初始化将初始化式放在圆括号中。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>string null_book = "9-999-99999-9"; // copy-initialization 
+string dots(10, '.');   //direct-initialization 
+string empty_copy = string();   // copy-initialization
+</code></pre>
+</div>
+
+<p><strong>形参与返回值</strong>
+当<strong>形参为非引用类型（第 7.2.1 节）的时候，将复制实参的值</strong>。类似地，以非引用类型作返回值时，将返回 return 语句 中的值的副本</p>
+
+<p>当形参或返回值为类类型时，由复制构造函数进行复制。make_plural 函数：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>string make_plural(size_t, const string&amp;, const string&amp;);
+</code></pre>
+</div>
+
+<p>这个函数隐式<strong>使用 string复制构造函数</strong>返回给定单词的复数形式。<strong>形参是 const 引用，不能复制。</strong></p>
+
+<p><strong>初始化容器元素</strong>
+复制构造函数可用于初始化顺序容器中的元素。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>vector&lt;string&gt; svec(5);
+</code></pre>
+</div>
+
+<p>编译器首先<strong>使用 string 默认构造函数创建一个临时值</strong>，然后使用复制构造函数<strong>将临时值复制到 svec 的每个元素</strong>。</p>
+
+<p><strong>构造函数与数组元素</strong>
+如果没有为类类型数组提供元素初始化式，则将用默认构造函数初始化每个元素。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Sales_item primer_eds[] = { string("0-201-16487-6"), 
+ string("0-201-54848-8"), 
+ string("0-201-82470-1"), 
+ Sales_item() 
+   }; 
+</code></pre>
+</div>
+
+<p>如前三个元素的初始化式中所示可以直接指定一个值，用于调用元素类型的单实参构造函数。如果希望不指定实参或指定多个实参，就需要使用完整的构造函数语法，正如最后一个元素的初始化那样。</p>
+
+<h3 id="合成的复制构造函数">合成的复制构造函数</h3>
+
+<p>如果我们没有定义复制构造函数，编译器就会为我们合成一个。<strong>合成复制构造函数的行为是，执行逐个成员初始化，将新对象初始化为原对象的副本。</strong>
+合成复制构造函数直接复制内置类型成员的值，类类型成员使用该类的复制构造函数进行复制。
+一个合成复制构造函数:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	 Sales_item::Sales_item(const Sales_item &amp;orig): 
+     isbn(orig.isbn),             // uses string copy constructor 
+     units_sold(orig.units_sold),  // copies orig.units_sold 
+     revenue(orig.revenue)         // copy orig.revenue 
+     {    }                        // empty body 
+</code></pre>
+</div>
+
+<h3 id="定义自己的复制构造函数">定义自己的复制构造函数</h3>
+
+<p>复制构造函数就是接受单个类类型引用形参（通常用 const 修饰）的构造函数：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Foo(const Foo&amp;); // copy constructor 
+</code></pre>
+</div>
+
+<h3 id="禁止复制">禁止复制</h3>
+
+<p>为了防止复制，类必须显式声明其复制构造函数为 private。
+<strong>大多数类应定义复制构造函数和默认构造函数</strong>
+不定义复制构造函数和／或默认构造函数，会严重局限类的使用。不允许复制的类对象只能作为引用传递给函数或从函数返回，它们也不能用作容器的元素。</p>
+
+<h2 id="赋值操作符">赋值操作符</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Sales_item trans, accum; 
+trans = accum;
+</code></pre>
+</div>
+
+<p>与复制构造函数一样，如果类没有定义自己的赋值操作符，则编译器会合成一个。</p>
+
+<h3 id="介绍重载赋值">介绍重载赋值</h3>
+<p>重载操作符是一些函数，其名字为 operator后跟着所定义的操作符的符
+号。通过定义名为 operator= 的函数，我们可以对赋值进行定义。</p>
+
+<p>像任何其他函数一样，<strong>操作符函数有一个返回值和一个形参表</strong>。形参表必须具有与该操作符数目相同的形参（如果操作符是一个类成员，则包括隐式 this 形参）。
+<strong>赋值是二元运算，所以该操作符函数有两个形参：第一个形参对应着左操作数，第二个形参对应右操作数。</strong></p>
+
+<p>大多数操作符可以定义为成员函数或非成员函数。<strong>当操作符为成员函数时，它的第一个操作数隐式绑定到 this 指针 (例如:=号左边对象可以用this调用)</strong>。</p>
+
+<p>赋值操作符的返回类型应该与内置类型赋值运算返回的类型相同（第 5.4.1 节）。<strong>内置类型的赋值运算返回对右操作数的引用，因此，赋值操作符也返回对同一类类型的引用。</strong>
+Sales_item 的赋值操作符可以声明为：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> class Sales_item { 
+ public: 
+     Sales_item&amp; operator=(const Sales_item &amp;); 
+ }; 
+</code></pre>
+</div>
+
+<h3 id="合成赋值操作符">合成赋值操作符</h3>
+
+<p>合成赋值操作符与合成复制构造函数的操作类似。它会执行逐个成员赋值：<strong>右操作数对象的每个成员赋值给左操作数对象的对应成员</strong>。
+除数组之外，每个成员用所属类型的常规方式进行赋值。对于数组，给每个数组元素赋值。
+Sales_item 的合成赋值操作符可能如下所示：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> Sales_item&amp; 
+ Sales_item::operator=(const Sales_item &amp;rhs) 
+ { 
+     isbn = rhs.isbn;       // calls string::operator= 
+     units_sold = rhs.units_sold;  // uses built-in int assignment 
+     revenue = rhs.revenue; // uses built-in double assignment 
+     return *this; 
+ }
+</code></pre>
+</div>
+
+<p>该操作符返回 *this，它是对左操作数对象的引用。</p>
+
+<h2 id="析构函数">析构函数</h2>
+
+<p><strong>构造函数的一个用途是自动获取资源</strong>。例如，构造函数可以分配一个缓冲区或打开一个文件，在构造函数中分配了资源之后，需要一个<strong>析构函数自动回收或释放资源</strong>。</p>
+
+<h3 id="何时调用析构函数">何时调用析构函数</h3>
+
+<p>撤销类对象时会自动调用析构函数：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	Sales_item item(*p);  // copy constructor copies *p into item 
+     delete p;             // destructor called on object pointed to by p
+</code></pre>
+</div>
+
+<p>变量（如 item）在超出作用域时应该自动撤销。因此，当遇到右花括号时，将运行 item 的析构函数。
+<strong>动态分配的对象只有在指向该对象的指针被删除时才撤销</strong>。如果没有删除指向动态对象的指针，则不会运行该对象的析构函数，对象就一直存在，从而导致内存泄漏，而且，对象内部使用的任何资源也不会释放。
+<strong>当对象的引用或指针超出作用域时，不会运行析构函数。只有删除指向动态分配对象的指针或实际对象（而不是对象的引用）超出作用域时，才会运行析构函数。</strong></p>
+
+<h3 id="合成析构函数">合成析构函数</h3>
+<p>与复制构造函数或赋值操作符不同，编译器总是会为我们合成一个析构函数。<strong>合成析构函数按对象创建时的逆序撤销每个非 static 成员</strong>，因此，它按成员在类中声明次序的逆序撤销成员。</p>
+
+<h3 id="如何编写析构函数">如何编写析构函数</h3>
+<p>析构函数是个成员函数，它的名字是在类名字之前加上一个代字号（~），它没有返回值，没有形参。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>~Sales_item() { }
+</code></pre>
+</div>
+
+<h2 id="管理指针成员">管理指针成员</h2>
+
+<p>本书始终提倡使用标准库。这样做的一个原因是，<strong>使用标准库能够大大减少现代 C++ 程序中对指针的需要。</strong></p>
+
+<p>包含指针的类需要特别注意复制控制，原因是复制指针时只复制指针中的地址，而不会复制指针指向的对象。</p>
+
+<p>类设计者必须首先需要决定的是该指针应提供什么行为。将一个指针复制到另一个指针时，两个指针指向同一对象。当两个指针指向同一对象时，可能使用任一指针改变基础对象。类似地，很可能一个指针删
+除了一对象时，另一指针的用户还认为基础对象仍然存在。</p>
+
+<p>大多数 C++ 类采用以下三种方法之一管理指针成员：</p>
+<ol>
+  <li>指针成员采取常规指针型行为。这样的类具有指针的所有缺陷但无需特殊的复制控制。</li>
+  <li>类可以实现所谓的“智能指针”行为。指针所指向的对象是共享的，但类能够防止悬垂指针。</li>
+  <li>类采取值型行为。指针所指向的对象是唯一的，由每个类对象独立管理。</li>
+</ol>
+
+<p>两个对象都有指针成员,且指针共享同一对象时,删除一个其中对象时,另一个对象中的指针会造成指针悬挂(即指向一个无用的空间)。</p>
+
+<h3 id="定义智能指针类">定义智能指针类</h3>
+
+<p>除了使指针成员与指针完全相同之外，另一种方法是定义所谓的智能指针类。本例中让智能指针负责删除共享对象。
+用户仍然可以通过普通指针访问对象，但绝不能删除指针。<strong>HasPtr 类将保证在撤销指向对象的最后一个 HasPtr 对象时删除对象</strong>。</p>
+
+<p><strong>引入使用计数</strong>
+定义智能指针的通用技术是采用一个<strong>使用计数</strong>。智能指针类将一个计数器与类指向的对象相关联。
+使用计数为 0 时，删除对象。</p>
+
+<p><strong>使用计数类</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// private class for use by HasPtr only 
+ class U_Ptr { 
+     friend class HasPtr; 
+     int *ip; 
+     size_t use;
+     U_Ptr(int *p): ip(p), use(1) { } 
+     ~U_Ptr() { delete ip; } 
+ };
+</code></pre>
+</div>
+
+<p>这个类的所有成员均为 private。我们不希望用户使用 U_Ptr 类，所以它没有任何 public 成员。将 HasPtr 类设置为友元，使其成员可以访问 U_Ptr 的成员。</p>
+
+<p>U_Ptr 类保存指针和使用计数，每个 HasPtr 对象将指向一个 U_Ptr 对象，使用计数将跟踪指向每个 U_Ptr 对象的 HasPtr 对象的数目。</p>
+
+<p><img src="http://img.blog.csdn.net/20150711192759830" alt="这里写图片描述" /></p>
+
+<p>如果复制这个对象，则对象如下图所示:</p>
+
+<p><img src="http://img.blog.csdn.net/20150711192810889" alt="这里写图片描述" /></p>
+
+<p>新的 HasPtr 类保存一个指向 U_Ptr 对象的指针，U_Ptr对象指向实际的 int基础对象。必须改变每个成员以说明的 HasPtr 类指向一个 U_Ptr对象而不是一个 int  .
+先看看构造函数和复制控制成员：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>class HasPtr { 
+ public: 
+     HasPtr(int *p, int i): ptr(new U_Ptr(p)), val(i) { }//将指针ptr初始化为指向一个新的U_Ptr的对象,该U_Ptr对象使用p初始化自己的指针成员ip
+     HasPtr(const HasPtr &amp;orig): 
+        ptr(orig.ptr), val(orig.val) { ++ptr-&gt;use; } 
+    //复制构造函数:将orig的指针成员ptr指向的U_Ptr对象的计数器+1
+     HasPtr&amp; operator=(const HasPtr&amp;); 
+     ~HasPtr() { if (--ptr-&gt;use == 0) delete ptr; }      //计数器为0时才删除共享的对象,防止了指针悬挂
+ private: 
+     U_Ptr *ptr; // points to use-counted U_Ptr class 
+     int val; 
+ };
+</code></pre>
+</div>
+
+<p><strong>赋值与使用计数</strong>
+两个HasPtr对象相互赋值,赋值操作符比复制构造函数复杂一点：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> HasPtr&amp; HasPtr::operator=(const HasPtr &amp;rhs) 
+ { 
+     ++rhs.ptr-&gt;use;     // increment use count on rhs first 
+     if (--ptr-&gt;use == 0) 
+          delete ptr;    // if use count goes to 0 on this object, delete it 
+     ptr = rhs.ptr;      // copy the U_Ptr object 
+     val = rhs.val;      // copy the int member 
+     return *this; 
+ }
+</code></pre>
+</div>
+
+<p>首先将右操作数中的使用计数加 1，然后<strong>将左操作数对象的使用计数减 1</strong> 并检查这个使用计数。像析构函数中那样，<strong>如果这是指向 U_Ptr对象的最后一个对象，就删除该对象</strong>，<strong>这会依次撤销ptr所指向的 int基础对象</strong>。将左操作数中的当前值减1（可能撤销该对象）之后，再将指针从 rhs 复制到这个对象。赋值照常返回对这个对象的引用。</p>
+
+<h3 id="定义值型类">定义值型类</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>		HasPtr(const HasPtr &amp;orig): 
+        ptr(new int (*orig.ptr)), val(orig.val) { } 
+</code></pre>
+</div>
+
+<p>创建一个新的int型副本（和原值int有相同值）,使orig的ptr指向它。</p>
+
+<h2 id="小结">小结</h2>
+<p>类除了定义该类型对象上的操作，还需要定义复制、赋值或撤销该类型对象的含义。特殊成员函数（复制构造函数、赋值操作符和析构函数）可用于定义这些操作。这些操作统称为“复制控制”函数。</p>
+
+<p>如果类没有定义这些操作中的一个或多个，编译器将自动定义它们。合成操作执行逐个成员初始化、赋值或撤销：<strong>合成操作依次取得每个成员，根据成员类型进行成员的复制、赋值或撤销。</strong></p>
+
+<p>如果想要<strong>改变合成复制构造函数的原本定义</strong>（一对一的赋值），改为一对多赋值，多对多赋值或其他操作时，<strong>可以自己定义复制构造函数，赋值操作符和析构函数</strong>。参考第四版614页的消息处理示例。</p>
+
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/logo.jpg" alt="c0ks">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" > <span itemprop="author">c0ks</span></h3>
+	<p class="author-bio"></p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=c++%20primer读书笔记--第十三章%20复制控制&amp;url=http://localhost:4000/language/c++-primer-note-chapter13/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i>  Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/language/c++-primer-note-chapter13/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i>  Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/language/c++-primer-note-chapter13/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i>  Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p> <time datetime="2015-12-18T00:00:00Z" itemprop="datePublished">December 18, 2015</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="http://localhost:4000" ></a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2016 <a href="http://localhost:4000">c0ks'S TECH BLOG</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+  </body>
+
+</html>

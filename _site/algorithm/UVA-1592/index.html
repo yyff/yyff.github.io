@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>UVA 1592 Database • c0ks'S TECH BLOG</title>
+    <meta name="description" content="
+  枚举
+
+
+">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="UVA 1592 Database">
+	<meta name="twitter:description" content="
+  枚举
+
+
+">
+	
+	
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/logo.jpg">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="UVA 1592 Database">
+	<meta property="og:description" content="
+  枚举
+
+
+">
+	<meta property="og:url" content="http://localhost:4000/algorithm/UVA-1592/">
+	<meta property="og:site_name" content="c0ks'S TECH BLOG">
+
+    <link rel="canonical" href="http://localhost:4000/algorithm/UVA-1592/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="c0ks'S TECH BLOG Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">c0ks'S TECH BLOG</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">c0ks'S TECH BLOG</a></li>
+	
+    
+    <li><a href="http://localhost:4000/" >Home</a></li>
+  
+    
+    <li><a href="http://localhost:4000/language/" >Language</a></li>
+  
+    
+    <li><a href="http://localhost:4000/linux/" >Linux</a></li>
+  
+    
+    <li><a href="http://localhost:4000/algorithm/" >Algorithm</a></li>
+  
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>c0ks'S TECH BLOG <span></span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/">
+        
+        <div class="title">Home</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/language/">
+        
+        <div class="title">Language</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/linux/">
+        
+        <div class="title">Linux</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/algorithm/">
+        
+        <div class="title">Algorithm</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/about/">
+        
+        <div class="title">About Me</div>
+        
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/algorithm/" itemprop="url">
+        <span itemprop="title">Algorithm</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>UVA 1592 Database</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<blockquote>
+  <p>枚举</p>
+</blockquote>
+
+<h3 id="题意">题意:</h3>
+<p>找(r1,c1)==(r2,c1)和(r1,c2)==(r2,c2);</p>
+
+<h3 id="思路">思路:</h3>
+<p>1)用四重循环枚举会超时,所以将c1,c2变成一对(一个结构体来node封装)来查找
+2)用紫书中的IDcache和cache的思想(相同字符串有相同ID) ,无需多次比较字符串</p>
+
+<p>(注意):
+1)每循环两列中所有的c1,c2后要清空result</p>
+<h3 id="代码">代码</h3>
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">struct</span> <span class="n">node</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">;</span>
+    <span class="n">node</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="kt">int</span> <span class="n">y</span><span class="p">)</span><span class="o">:</span><span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">){}</span>
+    <span class="kt">bool</span> <span class="k">operator</span> <span class="o">&lt;</span> <span class="p">(</span><span class="k">const</span> <span class="n">node</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">r</span><span class="p">.</span><span class="n">x</span><span class="o">||</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="n">r</span><span class="p">.</span><span class="n">x</span><span class="o">&amp;&amp;</span><span class="n">y</span><span class="o">&lt;</span><span class="n">r</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">map</span><span class="o">&lt;</span><span class="n">node</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span> <span class="c1">//node的x,y对应两列,int对应他们所在的行
+</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">rows</span><span class="p">[</span><span class="mi">10000</span><span class="p">];</span> <span class="c1">// rows[i][j] 表示i行j列元素在cache中的代表的数字
+</span>
+<span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">IDcache</span><span class="p">;</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">cache</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">ID</span><span class="p">(</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">IDcache</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">str</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">cache</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">IDcache</span><span class="p">[</span><span class="n">str</span><span class="p">]</span><span class="o">=</span><span class="n">cache</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">IDcache</span><span class="p">[</span><span class="n">str</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">string</span> <span class="n">temp</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">n</span><span class="o">&gt;&gt;</span><span class="n">m</span><span class="p">)</span>
+    <span class="p">{</span>
+
+        <span class="n">cache</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+        <span class="n">IDcache</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">rows</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">clear</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">getchar</span><span class="p">();</span>   <span class="c1">//接收n和m后面的'\n'
+</span>        <span class="c1">//int num=n*m;
+</span>        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="n">temp</span><span class="p">);</span>  <span class="c1">//接收一行数据,
+</span>            <span class="kt">int</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">lastpos</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">m</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">pos</span><span class="o">=</span><span class="n">temp</span><span class="p">.</span><span class="n">find_first_of</span><span class="p">(</span><span class="sc">','</span><span class="p">,</span><span class="n">lastpos</span><span class="p">);</span>   <span class="c1">//从lastpos开始找分隔符位置,返回找到的位置;未找到返回-1
+</span>                <span class="k">if</span><span class="p">(</span><span class="n">pos</span><span class="o">==-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">string</span> <span class="n">t</span><span class="o">=</span><span class="n">temp</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">lastpos</span><span class="p">,</span><span class="n">pos</span><span class="o">-</span><span class="n">lastpos</span><span class="p">);</span>
+                    <span class="n">rows</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">ID</span><span class="p">(</span><span class="n">t</span><span class="p">));</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">string</span> <span class="n">t</span><span class="o">=</span><span class="n">temp</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">lastpos</span><span class="p">,</span><span class="n">pos</span><span class="o">-</span><span class="n">lastpos</span><span class="p">);</span>
+                    <span class="n">rows</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">ID</span><span class="p">(</span><span class="n">t</span><span class="p">));</span>
+                    <span class="n">lastpos</span><span class="o">=</span><span class="n">pos</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+        <span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">flag</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">c1</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">c1</span><span class="o">&lt;</span><span class="n">m</span><span class="p">;</span><span class="n">c1</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">c2</span><span class="o">=</span><span class="n">c1</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="n">c2</span><span class="o">&lt;</span><span class="n">m</span><span class="p">;</span><span class="n">c2</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">result</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>   <span class="c1">//遍历完两列清空一次;否则接着上次循环中保存的值,答案会错
+</span>                <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">r</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">r</span><span class="o">++</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="kt">int</span> <span class="n">x</span><span class="o">=</span><span class="n">rows</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c1</span><span class="p">],</span><span class="n">y</span><span class="o">=</span><span class="n">rows</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c2</span><span class="p">];</span>
+                    <span class="n">node</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">);</span>
+                    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">result</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+                        <span class="n">result</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">=</span><span class="n">r</span><span class="p">;</span>
+                    <span class="k">else</span>
+                    <span class="p">{</span>
+                        <span class="kt">int</span> <span class="n">r1</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="n">p</span><span class="p">];</span>
+                        <span class="n">printf</span><span class="p">(</span><span class="s">"NO</span><span class="se">\n</span><span class="s">%d %d</span><span class="se">\n</span><span class="s">%d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">r1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">c1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">c2</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+                        <span class="n">flag</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+
+                <span class="p">}</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">flag</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">flag</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">flag</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"YES"</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p><strong>超时的代码:</strong></p>
+<div class="highlighter-rouge"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+using namespace std;
+vector&lt;string&gt; eles;
+int main()
+{
+    string temp;
+    int n,m;
+    while(cin&gt;&gt;n&gt;&gt;m)
+    {
+        eles.clear();
+        eles.push_back(" ");
+        getchar();   //接收n和m后面的'\n'
+        //int num=n*m;
+        for(int i=1;i&lt;=n;i++)
+        {
+            getline(cin,temp);  //接收一行数据,
+            int pos=0,lastpos=0;
+            for(int j=1;j&lt;=m;j++)
+            {
+                pos=temp.find_first_of(',',lastpos);   //从lastpos开始找分隔符位置,返回找到的位置;未找到返回-1
+                if(pos==-1)
+                {
+                    string t=temp.substr(lastpos,pos-lastpos);
+                    eles.push_back(t);
+                    break;
+                }
+
+                else
+                {
+                    string t=temp.substr(lastpos,pos-lastpos);
+                    eles.push_back(t);
+                    lastpos=pos+1;
+                }
+
+            }
+
+        }
+        int r1,r2,c1,c2;
+        int flag=0;
+        for(r1=1;r1&lt;=n;r1++) //枚举r1,r2,c1,c2
+        {
+            for(r2=r1+1;r2&lt;=n;r2++)
+            {
+                for(c1=1;c1&lt;=m;c1++)
+                {
+                    for(c2=c1+1;c2&lt;=m;c2++)
+                    {
+                        if(r1!=r2&amp;&amp;c1!=c2)
+                        {
+                            int e1=(r1-1)*m+c1,e2=(r2-1)*m+c1;
+
+                            if(eles[e1]==eles[e2])
+                            {
+                                int e3=(r1-1)*m+c2,e4=(r2-1)*m+c2;
+                                if(eles[e3]==eles[e4])
+                                {
+                                    cout&lt;&lt;"NO"&lt;&lt;endl;
+                                    cout&lt;&lt;r1&lt;&lt;' '&lt;&lt;r2&lt;&lt;endl;
+                                    cout&lt;&lt;c1&lt;&lt;' '&lt;&lt;c2&lt;&lt;endl;
+                                    flag=1;
+
+                                }
+
+                            }
+                        }
+                        if(flag==1)
+                            break;
+                    }
+                    if(flag==1)
+                        break;
+                }
+                if(flag==1)
+                    break;
+            }
+            if(flag==1)
+                break;
+        }
+        if(flag==0)
+            cout&lt;&lt;"YES"&lt;&lt;endl;
+    }
+
+
+
+    return 0;
+}
+
+
+</code></pre>
+</div>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/logo.jpg" alt="c0ks">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" > <span itemprop="author">c0ks</span></h3>
+	<p class="author-bio"></p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=UVA%201592%20Database&amp;url=http://localhost:4000/algorithm/UVA-1592/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i>  Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/algorithm/UVA-1592/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i>  Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/algorithm/UVA-1592/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i>  Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p> <time datetime="2016-01-28T00:00:00Z" itemprop="datePublished">January 28, 2016</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="http://localhost:4000" ></a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2016 <a href="http://localhost:4000">c0ks'S TECH BLOG</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+  </body>
+
+</html>

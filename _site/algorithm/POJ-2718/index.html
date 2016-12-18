@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>POJ 2718 Smallest Difference • c0ks'S TECH BLOG</title>
+    <meta name="description" content="
+  枚举
+
+
+">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="POJ 2718 Smallest Difference">
+	<meta name="twitter:description" content="
+  枚举
+
+
+">
+	
+	
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/logo.jpg">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="POJ 2718 Smallest Difference">
+	<meta property="og:description" content="
+  枚举
+
+
+">
+	<meta property="og:url" content="http://localhost:4000/algorithm/POJ-2718/">
+	<meta property="og:site_name" content="c0ks'S TECH BLOG">
+
+    <link rel="canonical" href="http://localhost:4000/algorithm/POJ-2718/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="c0ks'S TECH BLOG Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">c0ks'S TECH BLOG</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">c0ks'S TECH BLOG</a></li>
+	
+    
+    <li><a href="http://localhost:4000/" >Home</a></li>
+  
+    
+    <li><a href="http://localhost:4000/language/" >Language</a></li>
+  
+    
+    <li><a href="http://localhost:4000/linux/" >Linux</a></li>
+  
+    
+    <li><a href="http://localhost:4000/algorithm/" >Algorithm</a></li>
+  
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>c0ks'S TECH BLOG <span></span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/">
+        
+        <div class="title">Home</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/language/">
+        
+        <div class="title">Language</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/linux/">
+        
+        <div class="title">Linux</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/algorithm/">
+        
+        <div class="title">Algorithm</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/about/">
+        
+        <div class="title">About Me</div>
+        
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/algorithm/" itemprop="url">
+        <span itemprop="title">Algorithm</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>POJ 2718 Smallest Difference</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<blockquote>
+  <p>枚举</p>
+</blockquote>
+
+<h3 id="题意">题意：</h3>
+
+<p>给一串大于0且小于9的数字，将其分成两串数字且差值最小。长度大于0的数字不能以0开始。</p>
+
+<h3 id="题解">题解</h3>
+
+<p>两个子串长度相同或相差1时它们的差值最小。使用next_permutation生成全排列后，用前一半的数字减后一半的数字取绝对值。</p>
+
+<h3 id="代码">代码</h3>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code>
+<span class="cp">#include&lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+#define MAXN 1000
+#define INF 1000000000
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">char</span> <span class="n">digit</span><span class="p">[</span><span class="n">MAXN</span><span class="p">];</span>
+<span class="kt">int</span> <span class="nf">solve</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">res</span><span class="o">=</span><span class="n">INF</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">len</span><span class="o">=</span><span class="n">strlen</span><span class="p">(</span><span class="n">digit</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">len</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">digit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="sc">'0'</span><span class="p">;</span>
+    <span class="k">do</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="n">len</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">((</span><span class="n">digit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'0'</span> <span class="o">&amp;&amp;</span> <span class="n">mid</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">||</span>
+            <span class="p">(</span><span class="n">digit</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'0'</span> <span class="o">&amp;&amp;</span> <span class="n">len</span><span class="o">-</span><span class="n">mid</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">mid</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">left</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="n">digit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="sc">'0'</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">mid</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">len</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">right</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="n">digit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="sc">'0'</span><span class="p">)</span> <span class="p">;</span>
+        <span class="c1">//cout&lt;&lt;"right:"&lt;&lt;right&lt;&lt;"\t"&lt;&lt;"left:"&lt;&lt;left&lt;&lt;endl;
+</span>        <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">temp</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">temp</span> <span class="o">=</span>  <span class="o">-</span><span class="n">temp</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">temp</span> <span class="o">&lt;</span> <span class="n">res</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">res</span><span class="o">=</span><span class="n">temp</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span><span class="k">while</span><span class="p">(</span><span class="n">next_permutation</span><span class="p">(</span><span class="n">digit</span><span class="p">,</span><span class="n">digit</span><span class="o">+</span><span class="n">len</span><span class="p">));</span>
+    <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+    <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">n</span><span class="p">;</span>
+    <span class="n">getchar</span><span class="p">();</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">n</span><span class="o">--</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">char</span> <span class="n">temp</span><span class="p">[</span><span class="n">MAXN</span><span class="p">];</span>
+        <span class="n">gets</span><span class="p">(</span><span class="n">temp</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">temp</span><span class="p">);</span> <span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">,</span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+            <span class="n">digit</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">temp</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">digit</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="sc">'\0'</span><span class="p">;</span>
+        <span class="n">sort</span><span class="p">(</span><span class="n">digit</span><span class="p">,</span> <span class="n">digit</span> <span class="o">+</span> <span class="n">strlen</span><span class="p">(</span><span class="n">digit</span><span class="p">));</span>
+        <span class="kt">int</span> <span class="n">res</span> <span class="o">=</span> <span class="n">solve</span><span class="p">();</span>
+        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">res</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/logo.jpg" alt="c0ks">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" > <span itemprop="author">c0ks</span></h3>
+	<p class="author-bio"></p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=POJ%202718%20Smallest%20Difference&amp;url=http://localhost:4000/algorithm/POJ-2718/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i>  Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/algorithm/POJ-2718/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i>  Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/algorithm/POJ-2718/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i>  Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p> <time datetime="2016-01-28T00:00:00Z" itemprop="datePublished">January 28, 2016</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="http://localhost:4000" ></a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2016 <a href="http://localhost:4000">c0ks'S TECH BLOG</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+  </body>
+
+</html>

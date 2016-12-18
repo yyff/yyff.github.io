@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>c++ primer读书笔记--第十六章 模板和泛型编程 • c0ks'S TECH BLOG</title>
+    <meta name="description" content="
+  本系列文章是关于我的c++ primer读书笔记
+
+
+">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="c++ primer读书笔记--第十六章 模板和泛型编程">
+	<meta name="twitter:description" content="
+  本系列文章是关于我的c++ primer读书笔记
+
+
+">
+	
+	
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/logo.jpg">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="c++ primer读书笔记--第十六章 模板和泛型编程">
+	<meta property="og:description" content="
+  本系列文章是关于我的c++ primer读书笔记
+
+
+">
+	<meta property="og:url" content="http://localhost:4000/language/c++-primer-note-chapter16/">
+	<meta property="og:site_name" content="c0ks'S TECH BLOG">
+
+    <link rel="canonical" href="http://localhost:4000/language/c++-primer-note-chapter16/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="c0ks'S TECH BLOG Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">c0ks'S TECH BLOG</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">c0ks'S TECH BLOG</a></li>
+	
+    
+    <li><a href="http://localhost:4000/" >Home</a></li>
+  
+    
+    <li><a href="http://localhost:4000/language/" >Language</a></li>
+  
+    
+    <li><a href="http://localhost:4000/linux/" >Linux</a></li>
+  
+    
+    <li><a href="http://localhost:4000/algorithm/" >Algorithm</a></li>
+  
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>c0ks'S TECH BLOG <span></span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/">
+        
+        <div class="title">Home</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/language/">
+        
+        <div class="title">Language</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/linux/">
+        
+        <div class="title">Linux</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/algorithm/">
+        
+        <div class="title">Algorithm</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/about/">
+        
+        <div class="title">About Me</div>
+        
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/language/" itemprop="url">
+        <span itemprop="title">Language</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>c++ primer读书笔记--第十六章 模板和泛型编程</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<blockquote>
+  <p>本系列文章是关于我的c++ primer读书笔记</p>
+</blockquote>
+
+<p>在泛型编程中，我们所编写的类和函数能够多态地用于跨越编译时不相关的类型。一个类或一个函数可以用来操纵多种类型的对象。标准库中的容器、迭代器和算法是很好的泛型编程的例子。</p>
+
+<h2 id="161-模板定义">16.1. 模板定义</h2>
+
+<h3 id="1611--定义函数模板">16.1.1.  定义函数模板</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;typename T&gt; 
+     int compare(const T &amp;v1, const T &amp;v2) 
+     { 
+         if (v1 &lt; v2) return -1; 
+         if (v2 &lt; v1) return 1; 
+         return 0; 
+     }
+</code></pre>
+</div>
+
+<p>模板定义以关键字 template开始，后接模板形参表，模板形参表是用尖括号括住的一个或多个模板形参的列表，形参之间以逗号分隔。 <strong>模板形参表不能为空</strong>。
+<strong>编译器将实例化 compare 的两个不同版本，编译器将用 int 代替 T 创建第一个版本，并用 string 代替 T 创建第二个版本。</strong></p>
+
+<h4 id="模板形参表">模板形参表</h4>
+<p>模板形参表很像函数形参表，函数形参表定义了特定类型的局部变量但并不初始化那些变量，在运行时再提供实参来初始化形参。</p>
+
+<p>在 compare 内部，可以使用名字 T 引用一个类型，T表示哪个实际类型由编译器根据所用的函数而确定。</p>
+
+<h4 id="使用函数模板">使用函数模板</h4>
+<p>使用函数模板时，编译器会推断哪个（或哪些）模板实参绑定到模板形参。一旦编译器确定了实际的模板实参，就称它实例化了函数模板的一个实例。
+推导出实际模板实参后，编译器使用实参代替相应的模板形参产生编译该
+版本的函数。</p>
+
+<h4 id="inline--函数模板">inline  函数模板</h4>
+<p>说明符放在模板
+形参表之后、返回类型之前</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> template &lt;typename T&gt; inline T min(const T&amp;, const T&amp;);
+</code></pre>
+</div>
+
+<h3 id="1612--定义类模板">16.1.2.  定义类模板</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Type&gt; class Queue { 
+     public: 
+         Queue ();                // default constructor 
+         Type &amp;front ();          // return element from head of Queue 
+         const Type &amp;front () const; 
+         void push (const Type &amp;); // add element to back of Queue 
+         void pop();              // remove element from head of Queue 
+         bool empty() const;      // true if no elements in the Queue 
+     private: 
+         // ... 
+     };
+</code></pre>
+</div>
+
+<h4 id="使用类模板">使用类模板</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    Queue&lt;int&gt; qi;                 // Queue that holds ints 
+    Queue&lt; vector&lt;double&gt; &gt; qc;    // Queue that holds vectors of doubles
+</code></pre>
+</div>
+
+<p>与调用函数模板形成对比，<strong>使用类模板时，必须为模板形参显式指定实参</strong></p>
+
+<h3 id="1613--模板形参">16.1.3.  模板形参</h3>
+
+<h4 id="模板形参作用域">模板形参作用域</h4>
+<p>模板形参的名字可以在声明为模板形参之后直到模板声明或定义的末尾处
+使用。
+模板形参可以是表示类型的类型形参，也可以是表示常量表达式的非类型形参(即内置类型int等)。</p>
+
+<p>下面的全局类型T会被模板函数屏蔽:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>typedef double T; 
+     template &lt;class T&gt; T calc(const T &amp;a, const T &amp;b) 
+     { 
+          T tmp = a; 
+          return tmp; 
+     } 
+</code></pre>
+</div>
+
+<p>与全局作用域中声明的对象、函数或类型同名的模板形参会屏蔽全局名字。</p>
+
+<h4 id="用作模板形参的名字不能在模板内部重用">用作模板形参的名字不能在模板内部重用。</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class T&gt; T calc(const T &amp;a, const T &amp;b) 
+     { 
+         typedef double T; // error: redeclares template parameter T 
+         T tmp = a; 
+         return tmp; 
+     }
+
+    // error: illegal reuse of template parameter name V 
+     template &lt;class V, class V&gt; V calc(const V&amp;, const V&amp;);
+</code></pre>
+</div>
+
+<h4 id="模板声明">模板声明</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class T&gt; int compare(const T&amp;, const T&amp;) ; 
+</code></pre>
+</div>
+
+<h3 id="1614--模板类型形参">16.1.4.  模板类型形参</h3>
+
+<p>类型形参由关键字 class 或 typename 后接说明符构成。</p>
+
+<h4 id="typename--与--class---的区别">typename  与  class   的区别</h4>
+<p>在函数模板形参表中，关键字 typename 和 class 具有相同含义，可以互换使用,但是一些旧程序只能支持class</p>
+
+<h4 id="在模板定义内部指定类型"><strong>在模板定义内部指定类型</strong></h4>
+<p>除了定义数据成员或函数成员之外，类还可以定义类型成员。例如 size_type。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Parm, class U&gt; 
+     Parm fcn(Parm* array, U value) 
+     { 
+         Parm::size_type * p; 
+     }
+</code></pre>
+</div>
+
+<p>如果要在函数模板内部使用这样的类型。<strong>必须显式地这样做（使用typename）</strong>，因为编译器不能通过检查得知由类型形参定义的名字何时是一个类型何时是一个值。
+默认情况下，编译器假定这样的名字指定数据成员，而不是类型。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>typename Parm::size_type * p; // ok: declares p to be a pointer
+</code></pre>
+</div>
+
+<h3 id="1615--非类型模板形参">16.1.5.  非类型模板形参</h3>
+<p><strong>在调用函数时非类型形参将用值代替，值的类型在模板形参表中指定</strong>。例如，下面的函数模板声明了 array_init是一个含有一个类型模板形参和一个非类型模板形参的函数模板。函数本身接受一个形参，该形参是数组的引用:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class T, size_t N&gt; void array_init(T (&amp;parm)[N]) 
+     { 
+         for (size_t i = 0; i != N; ++i) { 
+             parm[i] = 0; 
+         } 
+     }
+</code></pre>
+</div>
+
+<p><strong>模板非类型形参是模板定义内部的常量值</strong>，在需要常量表达式的时候，可使用非类型形参（例如，像这里所做的一样）指定数组的长度。如上面的N。</p>
+
+<p>当调用 array_init 时，编译器从数组实参计算非类型形参的值：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int x[42]; 
+ array_init(x);  // instantiates array_init(int (&amp;)[42]) 
+</code></pre>
+</div>
+
+<h3 id="1616--编写泛型程序">16.1.6.  编写泛型程序</h3>
+<p>编写模板时，代码不可能针对特定类型，但模板代码总是要对将使用的类型做一些假设。例如，虽然 compare 函数从技术上说任意类型都是有效的，但实际上，实例化的版本可能是非法的。</p>
+
+<p><strong>产生的程序是否合法，取决于函数中使用的操作以及所用类型支持的操作。</strong>
+如果用不支持 &lt; 操作符的对象调用 compare，则该调用将是无效的：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Sales_item item1, item2; 
+cout &lt;&lt; compare(item1, item2) &lt;&lt; endl; 程序会出错。Sales_item 类型没有定义 &lt; 操作符，所以该程序不能编译。
+</code></pre>
+</div>
+
+<h4 id="编写独立于类型的代码">编写独立于类型的代码</h4>
+<p>编写模板代码时，对实参类型的要求尽可能少是很有益的。 
+上述条件说明了编写泛型代码的两个重要原则：
+•   模板的形参是 const 引用。
+•   函数体中的测试只用 &lt; 比较。</p>
+
+<p>通过<strong>将形参设为 const 引用，就可以允许使用不允许复制的类型</strong>。大多数类型（包括内置类型和我们已使用过的除 IO 类型之外的所有标准库的类型）都允许复制。但是，也有不允许复制的类类型。将形参设为 const 引用，保证这种类型可以用于 compare 函数。</p>
+
+<h4 id="模板的编译时错误"><strong>模板的编译时错误</strong></h4>
+<p>编译模板时，编译器可能会在三个阶段中标识错误：
+第一阶段是<strong>编译模板定义本身时</strong>。在这个阶段中编译器一般不能发现许多错误，可以检测到诸如漏掉分号或变量名拼写错误一类的语法错误。</p>
+
+<p>第二个错误检测时间是<strong>在编译器见到模板的使用时</strong>。在这个阶段，编译器仍没有很多检查可做。对于函数模板的调用，许多编译器只检查实参的数目和类型是否恰当，编译器可以检测到实参太多或太少，也可以检测到假定类型相同的两个实参是否真地类型相同。对于类模板，编译器可以检测提供的模板实参的正确数目。 
+第三个错误检测是在<strong>实例化(编译器为模板函数生成对应的带有指定参数的函数)的时候</strong>，只有在这个时候可以发现类型相关的错误。根据编译器管理实例化的方式有可能在链接时报告这些错误。</p>
+
+<h2 id="162-实例化">16.2. 实例化</h2>
+<p>模板是一个蓝图，它本身不是类或函数。编译器用模板产生指定的类或函数
+的特定类型版本。</p>
+
+<h4 id="类的实例化">类的实例化</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> Queue&lt;int&gt; qi; 
+</code></pre>
+</div>
+
+<p>上面代码编译器自动创建名为 Queue 的类。实际上，编译器通过重新编写 Queue 模板，<strong>用类型 int 代替模板形参的每次出现而创建 Queue 类</strong>。实例化的类就像已经编写的一样：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Type&gt; class Queue&lt;int&gt; {   //类名变成Queue&lt;int&gt;
+     public: 
+         Queue();                  // this bound to Queue&lt;int&gt;* 
+         int &amp;front();             // return type bound to int 
+         const int &amp;front() const; // return type bound to int 
+         void push(const int &amp;);   // parameter type bound to int 
+         void pop();               // type invariant code 
+         bool empty() const;       // type invariant code 
+     private: 
+         // ... 
+     }; 
+</code></pre>
+</div>
+
+<h4 id="类模板形参是必需的">类模板形参是必需的</h4>
+<p><strong>类模板不定义类型，只有特定的实例才定义了类型</strong>。特定的实例化是通过提供模板实参与每个模板形参匹配而定义的。模板实参在用逗号分隔并用尖括号括住的列表中指定：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Queue&lt;int&gt; qi;         // ok: defines Queue that holds ints 
+</code></pre>
+</div>
+
+<h4 id="函数模板实例化">函数模板实例化</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>        compare(1, 0);             // ok: binds template parameter to int 
+        compare(3.14, 2.7);        // ok: binds template parameter to double
+</code></pre>
+</div>
+
+<h3 id="1621--模板实参推断">16.2.1.  模板实参推断</h3>
+<p>第一个调用 compare(1, 0) 中，实参为 int 类型；第二个调用compare(3.14, 2.7) 中，实参为 double类型。从函数实参确定模板实参的类型和值的过程叫做模板实参推断。</p>
+
+<h4 id="多个类型形参的实参必须完全匹配">多个类型形参的实参必须完全匹配</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>short si=1;
+compare(si, 1024);
+</code></pre>
+</div>
+
+<p>这个调用是错误的，因为调用 compare 时的实参类型不相同。</p>
+
+<p>如果 compare 的设计者想要允许实参的常规转换，则函数必须用两个类型形参来定义：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;typename A, typename B&gt; 
+     int compare(const A&amp; v1, const B&amp; v2) 
+     { 
+         if (v1 &lt; v2) return -1; 
+         if (v2 &lt; v1) return 1; 
+         return 0; 
+     }
+</code></pre>
+</div>
+
+<h4 id="类型形参的实参的受限转换">类型形参的实参的受限转换</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>     short s1, s2; 
+     int i1, i2; 
+     compare(i1, i2);           // ok: instantiate compare(int, int) 
+     compare(s1, s2);           // ok: instantiate compare(short, short) 
+</code></pre>
+</div>
+
+<p>一般而论，不会转换实参以匹配已有的实例化，相反，会产生新的实例。
+编译器只会执行两种转换： 
+•   <strong>const 转换</strong>：<strong>接受 const 引用或 const 指针的函数可以分别用非 const 对象的引用或指针来调用</strong>，无须产生新的实例化。
+<strong>如果函数接受非引用类型，形参类型实参都忽略 const</strong>，即，无论传递 const 或非 const 对象给接受非引用类型的函数，都使用相同的实例化。</p>
+
+<p>•   <strong>数组或函数到指针的转换</strong>：如果模板形参不是引用类型，则对数组或函数
+类型的实参应用常规指针转换。数组实参将当作指向其第一个元素的指
+针，函数实参当作指向函数类型的指针。</p>
+
+<p>非引用形参：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> template &lt;typename T&gt; T fobj(T, T); // arguments are copied
+ string s1("a value"); 
+ const string s2("another value"); 
+ fobj(s1, s2);     // ok: calls f(string, string), const is  ignored
+</code></pre>
+</div>
+
+<p>引用形参：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;typename T&gt; 
+T fref(const T&amp;, const T&amp;);       // reference arguments 
+fref(s1, s2);     // ok: non const object s1 converted to const reference
+</code></pre>
+</div>
+
+<h4 id="应用于非类型参数的常规转换">应用于非类型参数的常规转换</h4>
+<p>用普通类型定义的形参可以使用常规转换（第 7.1.2 节），下面的函数模板 sum 有两个形参：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Type&gt; Type sum(const Type &amp;op1, int op2) 
+ { 
+     return op1 + op2; 
+ }
+</code></pre>
+</div>
+
+<p>上述模板函数：实参传给int型形参op2时能进行隐式类型转换（double，short等）。</p>
+
+<h4 id="模板实参推断与函数指针">模板实参推断与函数指针</h4>
+<p>假定有一个函数指针指向返回 int值的函数，该函数接受两个形参，都是 const int 引用，<strong>可以用该指针指向 compare 的实例化。</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;typename T&gt; int compare(const T&amp;, const T&amp;); 
+// pf1 points to the instantiation int compare (const int&amp;, const int&amp;) 
+int (*pf1) (const int&amp;, const int&amp;) = compare; 
+</code></pre>
+</div>
+
+<p>pf1 的类型是一个指针，指向“接受两个 const int&amp; 类型形参并返回 int 值的函数”，<strong>形参的类型决定了 T 的模板实参的类型为 int 型，指针 pf1 引用的是将 T 绑定到 int 的实例化。</strong></p>
+
+<p><strong>获取函数模板实例化的地址</strong>的时候，上下文必须是这样的：<strong>它允许为每个模板形参确定唯一的类型或值。</strong></p>
+
+<h3 id="1622--函数模板的显式实参">16.2.2.  函数模板的显式实参</h3>
+<p><strong>在某些情况下，不可能推断模板实参的类型</strong>。当函数的返回类型必须与形参表中所用的所有类型都不同时，最常出现这一问题。在这种情况下，<strong>有必要覆盖模板实参推断机制，并显式指定为模板形参所用的类型或值</strong>。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// neither T nor U works as return type 
+     sum(3, 4L); // second type is larger; want U sum(T, U) 
+     sum(3L, 4); // first type is larger; want T sum(T, U) 
+</code></pre>
+</div>
+
+<p>解决这一问题的一个办法，可能是强制 sum 的调用者将较小的类型强制转换（第 5.12.4 节）为希望作为结果使用的类型：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// ok: now either T or U works as return type 
+     int i; short s; 
+     sum(static_cast&lt;int&gt;(s), i); // ok: instantiates int sum(i nt, int)
+</code></pre>
+</div>
+
+<h4 id="在返回类型中使用类型形参">在返回类型中使用类型形参</h4>
+<p>指定返回类型的一种方式是引入第三个模板形参，它必须由调用者显式指定：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> template &lt;class T1, class T2, class T3&gt; 
+ T1 sum(T2, T3);
+</code></pre>
+</div>
+
+<p>这个版本增加了一个模板形参以指定返回类型，调用者必须在每次调用 sum 时为该形参显式提供实参。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>long val3 = sum&lt;long&gt;(i, lng); // ok: calls long sum(int, long)
+</code></pre>
+</div>
+
+<p>显示指定&lt; long &gt;直接对应模板函数第一个参数T1
+如果这样编写 sum 函数：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    // poor design: Users must explicitly specify all three template parameters 
+     template &lt;class T1, class T2, class T3&gt; 
+     T3 alternative_sum(T2, T1);
+</code></pre>
+</div>
+
+<p>则总是必须为所有三个形参指定实参：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// error: can't infer initial template parameters 
+ long val3 = alternative_sum&lt;long&gt;(i, lng); 
+ 
+ // ok: All three parameters explicitly specified
+ long val2 = alternative_sum&lt;long, int, long&gt;(i, lng);
+</code></pre>
+</div>
+
+<h4 id="显式实参与函数模板的指针">显式实参与函数模板的指针</h4>
+<p>可以使用显式模板实参的另一个例子是第 16.2.1 节中有二义性程序，通过使用显式模板实参能够消除二义性：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    template &lt;typename T&gt; int compare(const T&amp;, const T&amp;); 
+     // overloaded versions of func; each take a different function pointer type 
+     void func(int(*) (const string&amp;, const string&amp;)); 
+     void func(int(*) (const int&amp;, const int&amp;)); 
+     func(compare&lt;int&gt;); // ok: explicitly specify which version of compare 
+</code></pre>
+</div>
+
+<p>需要在调用中传递 compare 实例给名为 func 的重载函数。显式模板形参需要指出应使用哪个 compare 实例以及调用哪个 func 函数。</p>
+
+<h2 id="163-模板编译模型">16.3. 模板编译模型</h2>
+<p>当编译器看到模板定义的时候，它不立即产生代码。只有在看到用到模板时，如<strong>调用了函数模板或调用了类模板的对象的时候，编译器才产生特定类型的模板实例。</strong></p>
+
+<p>一般而言，<strong>当调用函数的时候，编译器只需要看到函数的声明</strong>。
+类似地，<strong>定义类类型的对象时，类定义必须可用，但成员函数的定义不是必须存在的。因此，应该将类定义和函数声明放在头文件中，而普通函数和类成员函数的定义放在源文件中。</strong></p>
+
+<p><strong>模板则不同：要进行实例化，编译器必须能够访问定义模板的源代码</strong>。当调用函数模板或类模板的成员函数的时候，编译器需要函数定义，需要那些通常放在源文件中的代码。</p>
+
+<p>标准 C++ 为编译模板代码定义了两种模型。在两种模型中，构造程序的方式很大程度上是相同的：<strong>类定义和函数声明放在头文件中，而函数定义和成员定义放在源文件中</strong>。两种模型的不同在于，编译器怎样使用来自源文件的定义。如本书所述，<strong>所有编译器都支持第一种模型，称为“包含”模型</strong>，只有一些编译器支持第二种模型，“分别编译”模型。</p>
+
+<p>要编译使用自己的类模板和函数模板的代码，必须查阅编译器的用户指南，看看编译器怎样处理实例化。</p>
+
+<h3 id="包含编译模型">包含编译模型</h3>
+<p>在包含编译模型中，编译器必须看到用到的所有模板的定义。一般而言，可以通过在声明函数模板或类模板的头文件中添加一条 #include指示使定义可用，该 #include 引入了包含相关定义的源文件：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	 // header file utlities.h 
+     #ifndef UTLITIES_H // header gaurd (Section 2.9.2, p. 69) 
+     #define UTLITIES_H 
+     template &lt;class T&gt; int compare(const T&amp;, const T&amp;); 
+     // other declarations 
+ 
+     #include "utilities.cc" // 取得compare的定义
+     #endif 
+ 
+     // implemenatation file utlities.cc 
+     template &lt;class T&gt; int compare(const T &amp;v1, const T &amp;v2) 
+     { 
+         if (v1 &lt; v2) return -1; 
+         if (v2 &lt; v1) return 1; 
+         return 0; 
+     } 
+</code></pre>
+</div>
+
+<p>这一策略使我们能够保持头文件和实现文件的分享，但是需要保证编译器在编译使用模板的代码时能看到两种文件。</p>
+
+<p>某些使用包含模型的编译器，特别是<strong>较老的编译器，可以产生多个实例</strong>。<strong>如果两个或多个单独编译的源文件使用同一模板，这些编译器将为每个文件中的模板产生一个实例。</strong>
+在链接的时候，或者在预链接阶段，编译器会选择一个实例化而丢弃其他的。在这种情况下，如果有许多实例化同一模板的文件，编译时性能会显著降低。</p>
+
+<h4 id="分别编译模型">分别编译模型</h4>
+<p>在分别编译模型中，编译器会为我们跟踪相关的模板定义（使用 export  关键字让一个模板只能定义为导出一次）。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>export template &lt;typename Type&gt; 
+     Type sum(Type t1, Type t2)
+</code></pre>
+</div>
+
+<p>通常，类声明必须放在头文件中，<strong>头文件中的类定义体不应该使用关键字 export，如果在头文件中使用了 export，则该头文件只能被程序中的一个源文件使用</strong>。</p>
+
+<h4 id="类模板中的名字查找">类模板中的名字查找</h4>
+<p>模板包含两种名字：</p>
+<ol>
+  <li>独立于模板形参的那些名字</li>
+  <li>依赖于模板形参的那些名字 
+设计者的责任是，保证所有不依赖于模板形参的名字在模板本身的作用
+域中定义
+模板用户的责任是，在实例化类模板的成员或函数模板的时候，用户必须保证这些声明是可见的。</li>
+</ol>
+
+<p>适当使用头文件的结构良好的程序都容易满足这两个要求。
+<strong>模板的作者</strong>应提供头文件，<strong>该头文件包含在类模板或在其成员定义中使用的所有名字的声明</strong>。
+<strong>用户必须保证包含了模板类型的头文件</strong>，以及定义用作成员类型的头文件。</p>
+
+<h2 id="164-类模板成员">16.4. 类模板成员</h2>
+
+<h3 id="queue---的实现策略">Queue   的实现策略</h3>
+
+<p><img src="http://img.blog.csdn.net/20150918210140908" alt="这里写图片描述" /></p>
+
+<ol>
+  <li>QueueItem 类表示 Queue 的链表中的节点，该类有两个数据成员item 和 next： 
+o  item 保存 Queue 中元素的值，它的类型随 Queue 的每个实例而变化。 
+o  next 是队列中指向下一 QueueItem 对象的指针。 Queue中的每个元素保存在一个 QueueItem 对象中。</li>
+  <li>Queue 类将提供第 16.1.2 节描述的接口函数，Queue类也有两个数据成员：head 和 tail，这些成员是 QueueItem 指针。</li>
+</ol>
+
+<h3 id="queueitem---类">QueueItem   类</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Type&gt; class QueueItem { 
+     // private class: no public section 
+         QueueItem(const Type &amp;t): item(t), next(0) { } 
+         Type item;           // value stored in this element 
+         QueueItem *next;     // pointer to next element in the Queue 
+     }; 
+</code></pre>
+</div>
+
+<p>QueueItem 类为私有类——它没有公用接口。我们这个类只是为实现 Queue，并不想用于一般目的，因此，它没有公用成员。需要将 Queue 类设为 QueueItem 类的友元，以便 Queue 类成员能够访问 QueueItem 的成员。</p>
+
+<h3 id="queue---类">Queue   类</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Type&gt; class Queue { 
+     public: 
+         // empty Queue 
+         Queue(): head(0), tail(0) { } 
+         // copy control to manage pointers to QueueItems in the Queue 
+         Queue(const Queue &amp;Q): head(0), tail(0) 
+                                       { copy_elems(Q); } 
+         Queue&amp; operator=(const Queue&amp;); 
+         ~Queue() { destroy(); } 
+         // return element from head of Queue 
+         // unchecked operation: front on an empty Queue is undefined 
+         Type&amp; front()             { return head-&gt;item; } 
+         const Type &amp;front() const { return head-&gt;item; } 
+         void push(const Type &amp;);   // add element to back of Queue 
+         void pop ();           // remove element from  head of Queue 
+         bool empty () const {      // true if no elements in the Queue 
+             return head == 0; 
+         } 
+     private: 
+         QueueItem&lt;Type&gt; *head;     // pointer to first element in Queue 
+         QueueItem&lt;Type&gt; *tail;     // pointer to last element in Queue 
+         // utility functions used by copy constructor, assignment, and  destructor 
+         void destroy();                // delete all the elements 
+         void copy_elems(const Queue&amp;); // copy elements from p arameter 
+     };
+</code></pre>
+</div>
+
+<p>Queue 类实现了几个成员函数： 
+•   默认构造函数，将 head 和 tail 指针置 0,指明当前 Queue 为空。 
+•   复制构造函数，初始化 head 和 tail，并调用 copy_elems从它的初始器复制元素。 
+•   几个 front 函数，返回头元素的值。这些函数不进行检查：像标准 queue 中的类似操作一样，用户不能在空 Queue 上运行 front 函数。 
+•   empty 函数，返回 head 与 0 的比较结果。如果 head 为 0，Queue 为空；否则，Queue 是非空的。</p>
+
+<h3 id="模板作用域中模板类型的引用">模板作用域中模板类型的引用</h3>
+<p>通常，当使用类模板的名字的时候，必须指定模板形参。这一规则有个例外：<strong>在类本身的作用域内部，可以使用类模板的非限定名。</strong>
+因此，复制构造函数定义其实等价于：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Queue&lt;Type&gt;(const Queue&lt;Type&gt; &amp;Q): head(0), tail(0) 
+                 { copy_elems(Q); } 
+</code></pre>
+</div>
+
+<p>编译器不会为类中使用的其他模板的模板形参进行这样的推断，因此，在声明伙伴类 QueueItem 的指针时，必须指定类型形参：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>QueueItem&lt;Type&gt; *head;    // pointer to first element in Queue
+</code></pre>
+</div>
+
+<p>即，在 Queue<int> 实例化的内部，head 和 tail 的类型是 QueueItem<int>*。</int></int></p>
+
+<h3 id="1641--类模板成员函数">16.4.1.  类模板成员函数</h3>
+
+<p>•   必须以关键字 template 开关，后接类的模板形参表。 
+•   必须指出它是哪个类的成员。 
+•   类名必须包含其模板形参</p>
+
+<p>在类外定义的 Queue 类的成员函数的开关应该是：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  template &lt;class T&gt; ret-type Queue&lt;T&gt;::member-name
+</code></pre>
+</div>
+
+<h4 id="destroy---函数">destroy   函数</h4>
+
+<p>为了举例说明在类外定义的类模板成员函数，我们来看 destroy 函数：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Type&gt; void Queue&lt;Type&gt;::destroy() 
+ { 
+     while (!empty()) 
+         pop(); 
+ }
+</code></pre>
+</div>
+
+<p>这个定义可以从左至右读作： 
+•   用名为 Type 的类型形参定义一个函数模板； 
+•   它返回 void； 
+•   它是在类模板 Queue&lt; Type &gt; 的作用域中(即它是Queue&lt; Type &gt;的成员函数)。</p>
+
+<h4 id="pop---函数">pop   函数</h4>
+<p>pop 成员的作用是除去 Queue 的队头值：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> template &lt;class Type&gt; void Queue&lt;Type&gt;::pop() 
+ { 
+     QueueItem&lt;Type&gt;* p = head; // keep pointer to head so 
+     head = head-&gt;next;         // head now points to next element 
+     delete p;                  // delete old head element
+}
+</code></pre>
+</div>
+
+<h4 id="push--函数">push  函数</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Type&gt; void Queue&lt;Type&gt;::push(const Type &amp;val) 
+     { 
+         QueueItem&lt;Type&gt; *pt = new QueueItem&lt;Type&gt;(val); 
+         if (empty()) 
+             head = tail = pt; 
+         else { 
+             tail-&gt;next = pt; 
+             tail = pt; 
+         } 
+     }
+</code></pre>
+</div>
+
+<h4 id="copy_elems--函数">copy_elems  函数</h4>
+<p>设计该函数的目的是供赋值操作符和复制构造函数使用：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Type&gt; 
+     void Queue&lt;Type&gt;::copy_elems(const Queue &amp;orig) 
+     { 
+         for (QueueItem&lt;Type&gt; *pt = orig.head; pt; pt = pt-&gt;next) 
+             push(pt-&gt;item); // copy the element 
+      } 
+</code></pre>
+</div>
+
+<h4 id="类模板成员函数的实例化">类模板成员函数的实例化</h4>
+<p><strong>对象的模板实参能够确定成员函数模板形参</strong>，这一事实意味着，调用类模板成员函数比调用类似函数模板更灵活。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Queue&lt;int&gt; qi; // instantiates class Queue&lt;int&gt; 
+ short s = 42; 
+ int i = 42; 
+ // ok: s converted to int and passed to push 
+ qi.push(s); // instantiates Queue&lt;int&gt;::push(const int&amp;) 
+ qi.push(i); // uses Queue&lt;int&gt;::push(const int&amp;)
+</code></pre>
+</div>
+
+<p>成员函数的类型在使用时才进行实例化。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> Queue&lt;string&gt; qs; 
+ qs.push("hello"); // instantiates Queue&lt;string&gt;::push
+</code></pre>
+</div>
+
+<h4 id="何时实例化类和成员">何时实例化类和成员</h4>
+<p>Queue 类中的 QueueItem成员是指针。类模板的指针定义不会对类进行实
+例化，只有用到这样的指针时才会对类进行实例化。
+Queue 类中的 QueueItem成员是指针。类模板的指针定义不会对类进行实
+例化，只有用到这样的指针时才会对类进行实例化。
+例如push函数中的：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>QueueItem&lt;Type&gt; *pt = new QueueItem&lt;Type&gt;(val);
+</code></pre>
+</div>
+
+<h3 id="1642--非类型形参的模板实参">16.4.2.  非类型形参的模板实参</h3>
+<p>Screen 类定义一个新版本：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;int hi, int wid&gt; 
+     class Screen { 
+     public: 
+         // template nontype parameters used to initialize data  members 
+         Screen(): screen(hi * wid, '#'), cursor (0), 
+                   height(hi), width(wid) { } 
+         // ... 
+     private: 
+         std::string            screen; 
+         std::string::size_type cursor; 
+         std::string::size_type height, width; 
+     };
+</code></pre>
+</div>
+
+<p>这个模板有两个形参，均为非类型形参。当用户定义 Screen 对象时，必须为每个形参提供常量表达式以供使用。类在默认构造函数中使用这些形参设置默认 Screen 的尺寸。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Screen&lt;24,80&gt; hp2621; // screen 24 lines by 80 characters
+</code></pre>
+</div>
+
+<p>非类型模板实参编译时必须是常量表达式。</p>
+
+<h3 id="1643--类模板中的友元声明">16.4.3.  类模板中的友元声明</h3>
+<ol>
+  <li>普通非模板类或函数的友元声明，将友元关系授予明确指定的类或函数。</li>
+  <li>类模板或函数模板的友元声明，授予对友元所有实例的访问权。</li>
+  <li>只授予对类模板或函数模板的特定实例的访问权的友元声明。</li>
+</ol>
+
+<h4 id="普通友元">普通友元</h4>
+<p>非模板类或非模板函数可以是类模板的友元：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Type&gt; class Bar { 
+     friend class FooBar; 
+     friend void fcn(); 
+ }; 
+</code></pre>
+</div>
+
+<h4 id="一般模板友元关系">一般模板友元关系</h4>
+<p>友元可以是类模板或函数模板：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> template &lt;class Type&gt; class Bar { 
+     template &lt;class T&gt; friend class Foo1; //所有类型的Foo1可以访问Bar类
+     template &lt;class T&gt; friend void templ_fcn1(const T&amp;); 
+    
+ };
+</code></pre>
+</div>
+
+<p><strong>Foo1 的友元声明是说，Foo1 的任意实例都可以访问 Bar 的任意实例的私有元素</strong>，类似地，temp_fcn1 的任意实例可以访问 Bar 的任意实例。</p>
+
+<h4 id="特定的模板友元关系">特定的模板友元关系</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> template &lt;class T&gt; class Foo2; 
+ template &lt;class T&gt; void templ_fcn2(const T&amp;); 
+ template &lt;class Type&gt; class Bar { 
+      friend class Foo2&lt;char*&gt;;  //特定类型char*的Foo2可以访问Bar类
+      friend void templ_fcn2&lt;char*&gt;(char* const &amp;); 
+ };
+</code></pre>
+</div>
+
+<p><strong>下面形式的友元声明更为常见：</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class T&gt; class Foo3; 
+ template &lt;class T&gt; void templ_fcn3(const T&amp;); 
+ template &lt;class Type&gt; class Bar { 
+     friend class Foo3&lt;Type&gt;;  //根据模板Bar的形参类型来指定特定类型的友元
+     friend void templ_fcn3&lt;Type&gt;(const Type&amp;); 
+ };
+</code></pre>
+</div>
+
+<h3 id="1644-queue和queueitem---的友元声明">16.4.4. Queue和QueueItem   的友元声明</h3>
+<p>QueueItem 类必须将 Queue 类设为友元：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Type&gt; class Queue; 
+     template &lt;class Type&gt; class QueueItem { 
+         friend class Queue&lt;Type&gt;; 
+      }; 
+</code></pre>
+</div>
+
+<h4 id="queue---输出操作符">Queue   输出操作符</h4>
+<p>因为希望能够输出任意类型 Queue的内容，所以需要将输出操作符也设为模板：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Type&gt; 
+     ostream&amp; operator&lt;&lt;(ostream &amp;os, const Queue&lt;Type&gt; &amp;q) 
+     { 
+         os &lt;&lt; "&lt; "; 
+         QueueItem&lt;Type&gt; *p; 
+         for (p = q.head; p; p = p-&gt;next) 
+                 os &lt;&lt; p-&gt;item &lt;&lt; " "; 
+         os &lt;&lt;"&gt;"; 
+         return os; 
+     } 
+</code></pre>
+</div>
+
+<p>为使输出操作符重载函数能访问QueueItem的item，next和Queue的head，必须在其模板类中输出（«）操作符声明为友元函数：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class T&gt; 
+     std::ostream&amp; operator&lt;&lt;(std::ostream&amp;, const Queue&lt;T&gt;&amp;); 
+     
+     template &lt;class Type&gt; class QueueItem { 
+         friend class Queue&lt;Type&gt;; 
+         // needs access to item and next 
+         friend std::ostream&amp; 
+         operator&lt;&lt; &lt;Type&gt; (std::ostream&amp;, const Queue&lt;Type&gt;&amp;); 
+     }; 
+     template &lt;class Type&gt; class Queue { 
+         // needs access to head 
+         friend std::ostream&amp; 
+         operator&lt;&lt; &lt;Type&gt; (std::ostream&amp;, const Queue&lt;Type&gt;&amp;); 
+     };
+</code></pre>
+</div>
+
+<h4 id="类型依赖性与输出操作符">类型依赖性与输出操作符</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>os &lt;&lt; p-&gt;item &lt;&lt; " "; 
+</code></pre>
+</div>
+
+<p>这条语句的item的类型必须支持输出操作符</p>
+
+<h3 id="1645--成员模板">16.4.5.  成员模板</h3>
+<p>任意类（模板或非模板）可以拥有本身为类模板或函数模板的成员，这种成员称为成员模板，成员模板不能为虚。</p>
+
+<h4 id="定义成员模板">定义成员模板</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class Type&gt; class Queue { 
+     public: 
+         template &lt;class It&gt; 
+         Queue(It beg, It end): 
+               head(0), tail(0) { copy_elems(beg, end); } 
+         // replace current Queue by contents delimited by a pair of iterators 
+         template &lt;class Iter&gt; void assign(Iter, Iter); 
+         // rest of Queue class as before 
+     private: 
+         template &lt;class Iter&gt; void copy_elems(Iter, Iter); 
+     };
+</code></pre>
+</div>
+
+<p>成员声明的开关是自己的模板形参表。构造函数和 assign成员各有一个模板类型形参，<strong>这些函数使用该类型形参作为其函数形参的类型，它们的函数形参是指明要复制元素范围的迭代器</strong>。</p>
+
+<h4 id="在类外部定义成员模板">在类外部定义成员模板</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class T&gt; template &lt;class Iter&gt; 
+     void Queue&lt;T&gt;::assign(Iter beg, Iter end) 
+     { 
+         destroy();            // remove existing elements in this Queue 
+         copy_elems(beg, end); // copy elements from the input range 
+     } 当成员模板是类模板的成员时，它的定义必须包含类模板形参以及自己的模板形参。
+
+template &lt;class T&gt; template &lt;class Iter&gt; 
+</code></pre>
+</div>
+
+<h4 id="成员模板和实例化">成员模板和实例化</h4>
+<p>与其他成员一样，成员模板只有在程序中使用时才实例化。
+<strong>成员模板有两种模板形参：由类定义的和由成员模板本身定义的。</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  short a[4] = { 0, 3, 6, 9 }; 
+     // instantiates Queue&lt;int&gt;::Queue(short *, short *) 
+     Queue&lt;int&gt; qi(a, a + 4); // copies elements from a into qi 
+     vector&lt;int&gt; vi(a, a + 4);
+     // instantiates Queue&lt;int&gt;::assign(vector&lt;int&gt;::iterator,vector&lt;int&gt;::iterator) 
+     qi.assign(vi.begin(), vi.end());
+</code></pre>
+</div>
+
+<p>该构造函数本身模板形参的类型由编译器根据 a 和 a+4 的类型推断，而该类型为 short 指针。因此，qi 的定义将实例化:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> void Queue&lt;int&gt;::Queue(short *, short *);
+</code></pre>
+</div>
+
+<p>这个构造函数的效果是，从名为 a 的数组中复制 short 类型的元素到 qi。</p>
+
+<p>对 assign 的调用将实例化 qi 的成员。qi 具有 Queue&lt; int &gt; 类型，因此，这个调用将实例化名为 assign 的 Queue&lt; int &gt;成员。该函数本身是函数模板，像对任意其他函数模板一样，编译器从传给调用的实参推断 assign 的模板实参，推断得到的类型是 vector&lt; int &gt;::iterator，即，这个调用将实例化</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>void Queue&lt;int&gt;::assign(vector&lt;int&gt;::iterator, 
+                         vector&lt;int&gt;::iterator);
+</code></pre>
+</div>
+
+<h3 id="1647类模板的-static-成员">16.4.7类模板的 static 成员</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class T&gt; class Foo { 
+     public: 
+        static std::size_t count() { return ctr; }
+     private: 
+        static std::size_t ctr; 
+     };
+</code></pre>
+</div>
+
+<p>Foo 类的每个实例化都共享static 成员</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  Foo&lt;int&gt; fi; //fi共享Foo&lt;int&gt;类的static成员
+     Foo&lt;string&gt; fs;//fs共享Foo&lt;string&gt;类的static成
+</code></pre>
+</div>
+
+<h4 id="使用类模板的--static--成员">使用类模板的  static  成员</h4>
+<p>可以通过类类型的对象访问类模板的 static成员，或者通过使用作用域操作符(带类型)直接访问成员。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ct = fi.count();              // ok: uses
+ ct = Foo&lt;int&gt;::count();  // 
+</code></pre>
+</div>
+
+<p><strong>与任意其他成员函数一样，static成员函数只有在程序中使用时才进行实例化。</strong></p>
+
+<h2 id="165-一个泛型句柄类">16.5. 一个泛型句柄类</h2>
+<p><strong>句柄类就是智能指针类。</strong>
+在第十五章定义了两个句柄类：Sales_item 类（第 15.8 节）和 Query 类（第 15.9 节）。这两个类管理继承层次中对象的指针，句柄的用户不必管理指向这些对象的指针，用户代码可以使用句柄类来编写。<strong>句柄能够动态分配和释放相关继承类的对象，并且将所有“实际”工作转发给继承层次中的底层类。</strong>
+本节将实现一个<strong>泛型句柄类（generic handle class）</strong>，提供管理使用计数和基础对象的操作。</p>
+
+<h3 id="1651--定义句柄类">16.5.1.  定义句柄类</h3>
+<p>Handle 类行为类似于指针：复制 Handle对象将不会复制基础对象，复制
+之后，两个 Handle 对象将引用同一基础对象。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>template &lt;class T&gt; class Handle { 
+     public: 
+         // 句柄类构造函数绑定一个对象 
+         Handle(T *p = 0): ptr(p), use(new size_t(1)) { } 
+         
+         // overloaded operators to support pointer behavior
+         T&amp; operator*(); 
+         T* operator-&gt;(); 
+         const T&amp; operator*() const; 
+         const T* operator-&gt;() const; 
+         
+         // copy control: normal pointer behavior, but last Handle deletes the object 
+         Handle(const Handle&amp; h): ptr(h.ptr), use(h.use) 
+                                             { ++*use; } 
+         Handle&amp; operator=(const Handle&amp;); 
+         ~Handle() { rem_ref(); } 
+     private: 
+         T* ptr;          // 共享对象
+         size_t *use;     // count of how many Handles point to *ptr 
+         void rem_ref() 
+             { if (--*use == 0) { delete ptr; delete use; } 
+     }; 
+     
+template &lt;class T&gt; 
+     inline Handle&lt;T&gt;&amp; Handle&lt;T&gt;::operator=(const Handle &amp;rhs) 
+     { 
+         ++*rhs.use;      // protect against self-assignment 
+         rem_ref();       // decrement use count and delete poi nters if 
+needed 
+         ptr = rhs.ptr; 
+         use = rhs.use; 
+         return *this; 
+     }
+     
+//如果 Handle 没有绑定到对象，则试图访问对象将抛出一个异常。
+template &lt;class T&gt; inline T&amp; Handle&lt;T&gt;::operator*() 
+     { 
+         if (ptr) return *ptr; 
+         throw std::runtime_error 
+                        ("dereference of unbound Handle");
+                        
+template &lt;class T&gt; inline T* Handle&lt;T&gt;::operator-&gt;() 
+     { 
+         if (ptr) return ptr; 
+         throw std::runtime_error 
+                        ("access through unbound Handle"); 
+     } 
+</code></pre>
+</div>
+
+<h3 id="1652--使用句柄">16.5.2.  使用句柄</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>       // user allocates but must not delete the object to which the Handle is attached 
+       Handle&lt;int&gt; hp(new int(42)); 
+       { 
+           Handle&lt;int&gt; hp2 = hp; // copies pointer; use count incremented 
+           cout &lt;&lt; *hp &lt;&lt; " " &lt;&lt; *hp2 &lt;&lt; endl; // prints 42 42 
+           *hp2 = 10;           // changes value of shared unde rlying int 
+       }   // hp2 goes out of scope; use count is decremented 
+       cout &lt;&lt; *hp &lt;&lt; endl; // prints 10 
+</code></pre>
+</div>
+
+<h4 id="使用--handle--对象对指针进行使用计数">使用  Handle  对象对指针进行使用计数</h4>
+
+<p>可以通过用 Handle<Item_base>: 对象代替 Item_base 指针而删去复制控制成员：</Item_base></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>class Sales_item { 
+     public: 
+         // default constructor: unbound handle 
+         Sales_item(): h() { } 
+         // copy item and attach handle to the copy 
+         Sales_item(const Item_base &amp;item): h(item.clone()) { } 
+         // no copy control members: synthesized versions work 
+        // member access operators: forward their work to the Handle class 
+         const Item_base&amp; operator*() const { return *h; } 
+         const Item_base* operator-&gt;() const 
+                                { return h.operator-&gt;(); } 
+     private: 
+         Handle&lt;Item_base&gt; h; // 计数句柄，use-counted handle 
+     };
+</code></pre>
+</div>
+
+<p>因为 <strong>Sales_item 的这个版本没有指针成员，所以不需要复制控制成员</strong>，Sales_item 的这个版本可以安全地使用合成的复制控制成员。管理使用计数和相关 Item_base 对象的工作在 Handle 内部完成。</p>
+
+<p>调用 net_price 函数的语句值得仔细分析一下（<strong>iter为Sales_item迭代器</strong>）：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sum += (*iter)-&gt;net_price(items.count(*iter));
+</code></pre>
+</div>
+
+<p>•    (<em>iter) 返回 Sales_item对象
+•   因此，(</em>iter)-&gt; 返回 h.operator-&gt;()
+•    h.operator-&gt;() 返回该 Handle 对象保存的 Item_base 指针ptr。 
+•   编译器对该 Item_base 指针解引用，并调用指针所指对象的 net_price 成员。</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/logo.jpg" alt="c0ks">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" > <span itemprop="author">c0ks</span></h3>
+	<p class="author-bio"></p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=c++%20primer读书笔记--第十六章%20模板和泛型编程&amp;url=http://localhost:4000/language/c++-primer-note-chapter16/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i>  Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/language/c++-primer-note-chapter16/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i>  Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/language/c++-primer-note-chapter16/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i>  Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p> <time datetime="2015-12-18T00:00:00Z" itemprop="datePublished">December 18, 2015</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="http://localhost:4000" ></a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2016 <a href="http://localhost:4000">c0ks'S TECH BLOG</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+  </body>
+
+</html>

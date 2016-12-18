@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>c++ primer读书笔记--第四章 数组和指针 • c0ks'S TECH BLOG</title>
+    <meta name="description" content="
+  本系列文章是关于我的c++ primer读书笔记
+
+
+">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="c++ primer读书笔记--第四章 数组和指针">
+	<meta name="twitter:description" content="
+  本系列文章是关于我的c++ primer读书笔记
+
+
+">
+	
+	
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/logo.jpg">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="c++ primer读书笔记--第四章 数组和指针">
+	<meta property="og:description" content="
+  本系列文章是关于我的c++ primer读书笔记
+
+
+">
+	<meta property="og:url" content="http://localhost:4000/language/c++-primer-note-chapter4/">
+	<meta property="og:site_name" content="c0ks'S TECH BLOG">
+
+    <link rel="canonical" href="http://localhost:4000/language/c++-primer-note-chapter4/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="c0ks'S TECH BLOG Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">c0ks'S TECH BLOG</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">c0ks'S TECH BLOG</a></li>
+	
+    
+    <li><a href="http://localhost:4000/" >Home</a></li>
+  
+    
+    <li><a href="http://localhost:4000/language/" >Language</a></li>
+  
+    
+    <li><a href="http://localhost:4000/linux/" >Linux</a></li>
+  
+    
+    <li><a href="http://localhost:4000/algorithm/" >Algorithm</a></li>
+  
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>c0ks'S TECH BLOG <span></span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/">
+        
+        <div class="title">Home</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/language/">
+        
+        <div class="title">Language</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/linux/">
+        
+        <div class="title">Linux</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/algorithm/">
+        
+        <div class="title">Algorithm</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/about/">
+        
+        <div class="title">About Me</div>
+        
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/language/" itemprop="url">
+        <span itemprop="title">Language</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>c++ primer读书笔记--第四章 数组和指针</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<blockquote>
+  <p>本系列文章是关于我的c++ primer读书笔记</p>
+</blockquote>
+
+<h2 id="数组">数组</h2>
+
+<h3 id="数组的定义和初始化">数组的定义和初始化</h3>
+<p>数组的维数必须用值大于等于 1 的<strong>常量表达式定义</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int staff_size = 27;  // nonconst
+double salaries[staff_size];     // error: non const  variable
+int test_scores[get_size()];     // error: non const expression 
+</code></pre>
+</div>
+
+<p>虽然 staff_size 是用字面值常量进行初始化，但 staff_size 本身是一个非 const 对象，只有在运行时才能获得它的值，因此，使用该变量来定义数组维数是非法的.</p>
+
+<h3 id="显式初始化数组元素">显式初始化数组元素</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int ia[array_size] = {0, 1, 2};
+</code></pre>
+</div>
+
+<p>如果没有显式提供元素初值，则数组元素会像普通变量一样初始化： 
+•   在<strong>函数体外定义</strong>的内置数组，其元素均初始化为 0。 
+•   在<strong>函数体内定义</strong>的内置数组，其元素无初始化。 
+•   不管数组在哪里定义，如果其<strong>元素为类类型</strong>，则自动调用该类的默认构造函数进行初始化；如果该类没有默认构造函数，则必须为该数组的元素提
+供显式初始化。
+•   除非显式地提供元素初值，否则<strong>内置类型</strong>的局部数组的元素没
+有初始化。此时，除了给元素赋值外，其他使用这些元素的操
+作没有定义。
+如果维数大于列出的元素初值个数，则只初始化前面的数组元素；剩下的其他元素，若是<strong>内置类型则初始化为0</strong>，若是<strong>类类型则调用该类的默认构造函数进行初始化</strong>：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>string str_arr[5] = {"hi", "bye"};// Equivalent to str_arr = {"hi", "bye", "", "", ""} 
+</code></pre>
+</div>
+
+<p>注:数组的长度是固定的,与 vector 类型不同，数组不提供 push_back 或者其他的操作在数组中添加新元素，</p>
+
+<h3 id="数组操作">数组操作</h3>
+<p>与 vector 元素一样，数组元素可用下标操作符（第 3.3.2节）来访问在用下标访问元素时，<strong>vector 使用 vector::size_type</strong>作为下标的类型，而<strong>数组下标</strong>的正确类型则是 <strong>size_t</strong>（第3.5.2 节）。
+<strong>数组和vector复制的比较:</strong>
+<strong>数组复制:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>const size_t array_size = 10; 
+int ia1[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }; 
+int ia2[array_size]; 
+for (size_t ix = 0; ix != array_size; ++ix) 
+ia2[ix] = ia1[ix];
+</code></pre>
+</div>
+
+<p><strong>vector复制:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>vector&lt;int&gt; ivec1(10, 20);//每个元素初始化为20 
+vector&lt;int&gt; ivec2; 
+for (vector&lt;int&gt;::iterator iter = ivec1.begin(); 
+iter != ivec1.end(); ++iter) 
+ivec2.push_back(*iter); 
+</code></pre>
+</div>
+
+<h2 id="指针">指针</h2>
+<p>指针保存的是另一个对象的地址.</p>
+
+<p>建议:尽量避免使用指针和数组,现代 C++程序采用 vector类型和迭代器取代一般的数组、采用 string 类型取代 C 风格字符串。</p>
+
+<h3 id="指针变量的定义">指针变量的定义</h3>
+<p>C++ 语言使用 * 符号把一个标识符声明为指针：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>vector&lt;int&gt; *pvec; // pvec can point to a vector&lt;int&gt; 
+      int *ip1, *ip2; // ip1 and ip2 can point to an int
+</code></pre>
+</div>
+
+<h3 id="指针可能的取值">指针可能的取值</h3>
+<p>一个有效的指针必然是以下三种状态之一:保存一个特定对象的地址；指向某个对象后面的另一对象；或者是 0值。<strong>若指针保存0值，表明它不指向任何对象</strong>。未初始化的指针是无效的，直到给该指针赋值后，才可使用它。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int *pi = 0;       // pi initialized to address no object
+int *pi3;          // ok, but dangerous, pi3 is unini tialized 
+</code></pre>
+</div>
+
+<blockquote>
+  <p>tip:如果可能的话，除非所指向的对象已经存在，否则不要先定义指针，这样可避免定义一个未初始化的指针。</p>
+</blockquote>
+
+<h3 id="指针初始化和赋值操作的约束">指针初始化和赋值操作的约束</h3>
+<ol>
+  <li><strong>0 值常量表达式</strong>（第 2.7 节），例如，在编译时可获得 0 值的整型const 对象或字面值常量 0。</li>
+  <li><strong>类型匹配的对象</strong>的地址。</li>
+  <li>另一<strong>对象末的下一地址</strong>。</li>
+  <li><strong>同类型的另一个有效指针</strong>。</li>
+</ol>
+
+<h3 id="void--指针">void*  指针</h3>
+<p>C++ 提供了一种特殊的指针类型 void* ，它可以保存任何类型对象的地址：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>double obj = 3.14;
+void *pv = &amp;obj;       // obj can be an object of any type
+</code></pre>
+</div>
+
+<p>void* 表明该指针与一地址值相关，但不清楚存储在此地址上的对象的类型。</p>
+
+<p>void* 指针只支持几种有限的操作：与另一个指针进行比较；向函数传递 void* 指针或从函数返回 void* 指针；给另一个 void* 指针赋值。</p>
+
+<blockquote>
+  <p>不允许使用 void* 指针操纵它所指向的对象。</p>
+</blockquote>
+
+<h3 id="指针和引用的比较">指针和引用的比较</h3>
+<p>考虑以下两个程序段。第一个程序段将一个指针赋给另一指针：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int ival = 1024, ival2 = 2048; 
+      int *pi = &amp;ival, *pi2 = &amp;ival2; 
+      pi = pi2;    // pi now points to ival2
+</code></pre>
+</div>
+
+<p>赋值结束后，pi 所指向的 ival 对象值保持不变，<strong>赋值操作修改了 pi 指
+针的值，使其指向另一个不同的对象</strong>。现在考虑另一段相似的程序，使用两个引用赋值：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int &amp;ri = ival, &amp;ri2 = ival2; 
+      ri = ri2;    // assigns ival2 to ival 
+</code></pre>
+</div>
+
+<p>这个赋值操作修改了 ri 引用 ival 对象的值，而并非引用本身。<strong>赋值后，
+这两个引用还是分别指向原来关联的对象，此时这两个对象的值相等</strong></p>
+
+<h3 id="指向指针的指针">指向指针的指针</h3>
+<p>指针本身也是可用指针指向的内存对象。指针占用内存空间存放其值，因此
+指针的存储地址可存放在指针中。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int ival = 1024; 
+          int *pi = &amp;ival; // pi points to an int 
+          int **ppi = &amp;pi; // ppi points to a pointer to int
+</code></pre>
+</div>
+
+<p><img src="http://img.blog.csdn.net/20150629185407421" alt="这里写图片描述" /></p>
+
+<p>为了真正地访问到 ival 对象，必须对 ppi 进行两次解引用 ,**ppi</p>
+
+<h3 id="指针的算术操作">指针的算术操作</h3>
+<p>通过指针的算术操作来获取指定内容的存储地
+址。指针的算术操作和迭代器的算术操作（第 3.4.1 节）以相同的方式实现（也
+具有相同的约束）。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ptrdiff_t n = ip2 - ip;
+</code></pre>
+</div>
+
+<p>两个指针减法操作的结果是标准库类型（library type）ptrdiff_t  的数据。与 size_t 类型一样，ptrdiff_t 也是一种与机器相关的类型，在 cstddef头文件中定义。size_t 是 unsigned 类型，而 <strong>ptrdiff_t 则是 signed 整型。</strong></p>
+
+<h3 id="const对象的指针和const指针">const对象的指针和const指针</h3>
+<p>如果指针指向 const 对象，则不允许用指针来改变其所指的 const 值。为了保证这个特性，C++ 语言强制要求指向 const 对象的指针也必须具有 const 特性：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>const double pi = 3.14; 
+          double *ptr = &amp;pi;        // error: ptr is a plain pointer 
+          const double *cptr = &amp;pi; // ok: cptr is a pointer to const
+</code></pre>
+</div>
+
+<p>const 指针——本身的值不能修改：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int errNumb = 0; 
+      int *const curErr = &amp;errNumb; // curErr is a constant  pointer
+</code></pre>
+</div>
+
+<h3 id="指针和-typedef">指针和 typedef</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>typedef string *pstring; 
+          const pstring cstr;
+</code></pre>
+</div>
+
+<p><strong>错误的解释:cstr 为指向 string 类型的 const 对象</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    const string *cstr; // wrong interpretation of const pstring cstr
+</code></pre>
+</div>
+
+<p>错误的原因在于将 typedef 当做文本扩展了。声明 const pstring 时，
+<strong>const 修饰的是 pstring</strong> 的类型，这是一个指针。因此，该声明语句应该是把 
+cstr 定义为指向 string 类型对象的 const 指针，这个定义等价于：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// cstr is a const pointer to string 
+          string *const cstr; // equivalent to const pstring cstr
+</code></pre>
+</div>
+
+<blockquote>
+  <p>阅读 const 声明语句产生的部分问题，源于 const 限定符既可以放 在类型前也可以放在类型后：</p>
+</blockquote>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>string const s1;   // s1 and s2 have same type, 
+          const string s2;   // they're both strings that are const 
+</code></pre>
+</div>
+
+<h2 id="c--风格字符串">C  风格字符串</h2>
+<p>cstring 是 string.h 头文件的 C++ 版本，而 string.h 则是 C 语言提供
+的标准库。</p>
+
+<p><img src="http://img.blog.csdn.net/20150629185423389" alt="这里写图片描述" /></p>
+
+<blockquote>
+  <p>传递给这些标准库函数例程的指针必须具有非零值，并且指向以 null 结束 的字符数组中的第一个元素。</p>
+</blockquote>
+
+<p>※在使用处理 C 风格字符串的标准库函数时，牢记字符串必须以结束符 null 
+结束.
+※必须确保目标字符串具有足够的大小
+※使用  strn  函数处理C 风格字符串更安全(规定了操作字符的个数)
+strncpy(largeStr, cp1, 17); // size to copy includes  the null</p>
+
+<h2 id="动态数组的定义">动态数组的定义</h2>
+<p>动态分配数组时，只需指定类型和数组长度，不必为数组对象命名，<strong>new表达式返回指向新分配数组的第一个元素的指针</strong>：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int *pia = new int[10]; // array of 10 uninitialized ints
+</code></pre>
+</div>
+
+<p>也可使用跟在数组长度后面的一对<strong>空圆括号，对数组元素做值初始化</strong>（第 
+3.3.1 节）：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int *pia2 = new int[10] (); // array of 10 uninitiali zed ints 
+</code></pre>
+</div>
+
+<p>圆括号要求编译器对数组做值初始化，在本例中即把数组元素都设置为 0。</p>
+
+<h3 id="const---对象的动态数组">const   对象的动态数组</h3>
+<p>因为数组元素都是 const 对象，无法赋值。实现这个要求的唯一方法是对数组做值初始化：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>      const int *pci_bad = new const int[100]; 
+      // error: uninitialized const array
+      const int *pci_ok = new const int[100](); 
+      // ok: value-initialized const array
+</code></pre>
+</div>
+
+<h3 id="动态空间的释放">动态空间的释放</h3>
+<p>delete [] 表达式释放指针所指向的数组空间：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>delete [] pia; 
+</code></pre>
+</div>
+
+<p>空方括号对是必不可少的：它告诉编译器该指针指向的是自由存储区中的数组，而并非单个对象。</p>
+<h3 id="指针和多维数组">指针和多维数组</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int ia[3][4];      // array of size 3, each element is an  array of 
+ints of size 4 
+     int (*ip)[4] = ia; // ip points to an array of 4 ints 
+     ip = &amp;ia[2];       // ia[2] is an array of 4 ints 
+</code></pre>
+</div>
+
+<p>*ip 是 int[4] 类型——即 ip 是一个指向含有 4 个元素的数组的指针。</p>
+
+<h3 id="用-typedef--简化指向多维数组的指针">用 typedef  简化指向多维数组的指针</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> int ia[3][4]; 
+typedef int int_array[4]; 
+     int_array *ip = ia; 
+//可使用 typedef 类型输出 ia 的元素： 
+     for (int_array *p = ia; p != ia + 3; ++p) 
+         for (int *q = *p; q != *p + 4; ++q) 
+              cout &lt;&lt; *q &lt;&lt; endl;
+</code></pre>
+</div>
+
+<p>外层的 for 循环首先初始化 p 指向 ia 的第一个内部数组，然后一直循环
+到 ia 的三行数据都处理完为止。++p 使 p 加 1，等效于移动指针使其指向 ia 的下一行（例如：下一个元素）。
+内层的 for 循环实际上处理的是存储在内部数组中的 int 型元素值。首先
+让 q 指向 p 所指向的数组的第一个元素。</p>
+
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/logo.jpg" alt="c0ks">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" > <span itemprop="author">c0ks</span></h3>
+	<p class="author-bio"></p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=c++%20primer读书笔记--第四章%20数组和指针&amp;url=http://localhost:4000/language/c++-primer-note-chapter4/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i>  Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/language/c++-primer-note-chapter4/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i>  Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/language/c++-primer-note-chapter4/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i>  Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p> <time datetime="2015-12-18T00:00:00Z" itemprop="datePublished">December 18, 2015</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="http://localhost:4000" ></a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2016 <a href="http://localhost:4000">c0ks'S TECH BLOG</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+  </body>
+
+</html>

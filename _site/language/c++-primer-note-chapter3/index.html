@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>c++ primer读书笔记--第三章 标准库类型 • c0ks'S TECH BLOG</title>
+    <meta name="description" content="
+  本系列文章是关于我的c++ primer读书笔记
+
+
+">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="c++ primer读书笔记--第三章 标准库类型">
+	<meta name="twitter:description" content="
+  本系列文章是关于我的c++ primer读书笔记
+
+
+">
+	
+	
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/logo.jpg">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="c++ primer读书笔记--第三章 标准库类型">
+	<meta property="og:description" content="
+  本系列文章是关于我的c++ primer读书笔记
+
+
+">
+	<meta property="og:url" content="http://localhost:4000/language/c++-primer-note-chapter3/">
+	<meta property="og:site_name" content="c0ks'S TECH BLOG">
+
+    <link rel="canonical" href="http://localhost:4000/language/c++-primer-note-chapter3/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="c0ks'S TECH BLOG Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">c0ks'S TECH BLOG</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">c0ks'S TECH BLOG</a></li>
+	
+    
+    <li><a href="http://localhost:4000/" >Home</a></li>
+  
+    
+    <li><a href="http://localhost:4000/language/" >Language</a></li>
+  
+    
+    <li><a href="http://localhost:4000/linux/" >Linux</a></li>
+  
+    
+    <li><a href="http://localhost:4000/algorithm/" >Algorithm</a></li>
+  
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>c0ks'S TECH BLOG <span></span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/">
+        
+        <div class="title">Home</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/language/">
+        
+        <div class="title">Language</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/linux/">
+        
+        <div class="title">Linux</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/algorithm/">
+        
+        <div class="title">Algorithm</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/about/">
+        
+        <div class="title">About Me</div>
+        
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/language/" itemprop="url">
+        <span itemprop="title">Language</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>c++ primer读书笔记--第三章 标准库类型</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<blockquote>
+  <p>本系列文章是关于我的c++ primer读书笔记</p>
+</blockquote>
+
+<h2 id="命名空间的-using--声明">命名空间的 using  声明</h2>
+<p>使用 using 声明可以在不需要加前缀 namespace_name:: 的情况下访问命名空间中的名字。using声明的形式如下：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  using namespace::name;
+</code></pre>
+</div>
+
+<p>如：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using std::cin; 
+using std::string;
+
+string s;       // ok: string is now a synonym for std::string 
+cin &gt;&gt; s;
+</code></pre>
+</div>
+
+<p><strong>注:标准库头文件用&lt;&gt;,其他的用”“</strong></p>
+<h2 id="标准库-string-类型">标准库 string 类型</h2>
+<h3 id="几种初始化-string-对象的方式">几种初始化 string 对象的方式</h3>
+
+<p><img src="http://img.blog.csdn.net/20150628182045730" alt="这里写图片描述" /></p>
+
+<h3 id="使用-getline--读取整行文本">使用 getline  读取整行文本</h3>
+
+<p>这个函数接受两个参数：
+一个输入流对象和一个 string 对象。getline 函数从输入流的下一行读取，并
+<strong>保存读取的内容到不包括换行符</strong>。和输入操作符不一样的是，<strong>getline 并不忽略
+行开头的换行符</strong>。只要 getline 遇到换行符，即便它是输入的第一个字符，
+getline 也将停止读入并返回。如果第一个字符就是换行符，则 string 参数将
+被置为空 string。</p>
+<h3 id="常用的-string-操作">常用的 string 操作</h3>
+
+<p><img src="http://img.blog.csdn.net/20150628181621756" alt="这里写图片描述" /></p>
+
+<h3 id="stringsize_type--类型">string::size_type  类型</h3>
+<p>size 操作返回的是 string::size_type类型的值。string类类型和许多其他库类型都定义了一些配套类型（companion  type）。<strong>通过这些配套类型，库类型的使用就能与机器无关</strong>（machine-independent）。size_type  就是这些配套类型中的一种。</p>
+<h4 id="string-关系操作符">string 关系操作符</h4>
+<p>关系操作符比较两个 string 对象时采用了和（大小写敏感的）<strong>字典排序</strong>相同的策略： 
+•   如果两个 string 对象长度不同，且短的 string 对象与长的 string 对
+象的前面部分相匹配，则短的 string 对象小于长的 string 对象。 
+•   如果 string 对象的字符不同，则比较第一个不匹配的字符。</p>
+<h3 id="和字符串字面值的连接">和字符串字面值的连接</h3>
+
+<p>当进行 string 对象和字符串字面值混合连接操作时，+ 操作符的左右操作
+数必须至少有一个是 string 类型的：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>string s3 = s1 + ", " + s2 + "\n"; // right 
+
+ string s4 = "hello" + ", ";      // error: no string operand
+</code></pre>
+</div>
+
+<h3 id="cctype--中的函数">cctype  中的函数</h3>
+
+<p><img src="http://img.blog.csdn.net/20150628181638311" alt="这里写图片描述" /></p>
+
+<p>注: <strong>C 标准库头文件命名形式为 name 而 C++ 版本则命名为 cname ，少了
+后缀，.h 而在头文件名前加了 c</strong> ,表示这个头文件源自 C 标准库。因此，
+cctype 与 ctype.h 文件的内容是一样的  通常，C++ 程序中应采用 cname 这种头文件的版本，而不采用 name.h 版本，这样，标准库中的名字在命名空间 std 中保持一致</p>
+
+<h2 id="标准库-vector-类型">标准库 vector 类型</h2>
+
+<p><img src="http://img.blog.csdn.net/20150628181656633" alt="这里写图片描述" /></p>
+
+<p>vector 是同一种类型的对象的集合，每个对象都有一个对应的整数索引值。
+vector 是一个类模板（class template）。使用模板可以编写一个类定义
+或函数定义，而用于多个不同的数据类型。必须说明 vector 保存何种对象的类型，通过将类型放在类型放在类模板名称后面的尖括号中来指定类型：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> vector&lt;int&gt; ivec;               // ivec holds objects of type int 
+ vector&lt;Sales_item&gt; Sales_vec;   // holds Sales_items
+</code></pre>
+</div>
+
+<p>**注:vector 不是一种数据类型，而只是一个类模板，可用来定义任意多种数据类型。vector 类型的每一种都指定了其保存元素的类型。因此，vector<int> 和 vector<string> 都是数据类型。**</string></int></p>
+
+<p>注:虽然可以对给定元素个数的 vector 对象预先分配内存，但更有效的方法是先初始化一个空 vector 对象，然后再动态地增加元素（我们随后将学习如何进行这样的操作）。</p>
+
+<h3 id="vector--对象的操作">vector  对象的操作</h3>
+
+<p><img src="http://img.blog.csdn.net/20150628181714752" alt="这里写图片描述" /></p>
+
+<p>empty 和 size 操作类似于 string 的相关操作（3.2.3 节）。成员函数 
+size 返回相应 vector 类定义的 size_type 的值。</p>
+
+<p>使用 size_type 类型时，必须指出该类型是在哪里定义的。
+vector 类型总是包括总是包括 vector 的元素类型.如:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>vector&lt;int&gt;::size_type        // ok 
+     vector::size_type            // error
+</code></pre>
+</div>
+
+<h3 id="vector--的下标操作">vector  的下标操作:</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>for (vector&lt;int&gt;::size_type ix = 0; ix != ivec.size(); ++ix) 
+         ivec[ix] = ix;//error:下标操作不能添加新元素
+         ivec.push_back(ix);  // ok: adds new element with value ix
+</code></pre>
+</div>
+
+<p>注:下标操作可以进行重置已有元素,但若元素不存在,必须先用push_back方法分配内存并增加新元素</p>
+
+<p>上述for循环中的判断条件ix != ivec.size()中,循环可以容易地增加新元素，如果确实增加了新元素的话，那么测试已保存的 size 值作为循环的结束条件就会有问题，因为没有将新加入的元素计算在内。所以我们倾向于在每次循环中测试 size 的当前值，而不是在进入循环前，存储 size 值的副本。</p>
+<h2 id="迭代器简介">迭代器简介</h2>
+<p>除了使用下标来访问 vector 对象的元素外，标准库还提供了另一种访问元
+素的方法：使用迭代器（iterator）。迭代器是一种检查容器内元素并遍历元素
+的数据类型。
+各容器类都定义了自己的 iterator 类型，用于访问容器内的元素。换句话说，每个容器都定义了一个名为 iterator 的类型，而这种类型支持（概念上的）迭代器的各种操作。</p>
+
+<p>每种容器都定义了一对命名为 begin 和 end 的函数，用于返回迭代器。如
+果容器中有元素的话，由 begin 返回的迭代器指向第一个元素：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> vector&lt;int&gt;::iterator iter = ivec.begin();
+</code></pre>
+</div>
+
+<p>由 end 操作返回的迭代器指向 vector 的“末端元素的下一个”。“超出末端迭代器”（off-the-end iterator）。表明它指向了一个不存在的元素。</p>
+
+<p>由 end 操作返回的迭代器并不指向 vector 中任何实际的元素，相反，它只是起一个<strong>哨兵</strong>（sentinel）的作用，表示我们已处理完 vector 中所有元素。
+通过迭代器改变原来的重置操作:
+原来版本:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// reset all the elements in ivec to 0 
+     for (vector&lt;int&gt;::size_type ix = 0; ix != ivec.size(); ++ix) 
+             ivec[ix] = 0;
+</code></pre>
+</div>
+
+<p>迭代器版本:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// equivalent loop using iterators to reset all the elemen ts in ivec 
+to 0 
+     for (vector&lt;int&gt;::iterator iter = ivec.begin(); 
+                                iter != ivec.end(); ++iter) 
+         *iter = 0;  // set element to which iter refers to 0
+</code></pre>
+</div>
+
+<h3 id="const_iterator类型">const_iterator类型</h3>
+<p>前面的程序用 vector::iterator 改变 vector 中的元素值。每种容器类型
+还定义了一种名为 const_iterator 的类型，<strong>该类型只能用于读取容器内元素，
+但不能改变其值。</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>for (vector&lt;string&gt;::const_iterator iter = text.begin(); 
+                                  iter != text.end(); ++ iter) 
+         *iter = " ";     // error: *iter is const
+</code></pre>
+</div>
+
+<p>不要把 const_iterator 对象与 const 的 iterator 对象混淆起来。声明
+<strong>一个 const 迭代器时，必须初始化迭代器。一旦被初始化后，就不能改变它的
+值(即下列的cit的值不能被改变)</strong>：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>        vector&lt;int&gt; nums(10);  // nums is nonconst 
+        const vector&lt;int&gt;::iterator cit = nums.begin(); 
+        ++cit;//error,the value of cit cant be changed
+</code></pre>
+</div>
+
+<p>结论:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// an iterator that cannot write elements 
+     vector&lt;int&gt;::const_iterator 
+     // an iterator whose value cannot change 
+     const vector&lt;int&gt;::iterator 
+</code></pre>
+</div>
+
+<p><strong>定位于 vector 中间元素</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>vector&lt;int&gt;::iterator mid = vi.begin() + vi.size() / 2;
+</code></pre>
+</div>
+
+<h2 id="标准库-bitset">标准库 bitset</h2>
+<h3 id="bitset--对象的定义和初始化">bitset  对象的定义和初始化</h3>
+
+<p><img src="http://img.blog.csdn.net/20150628181728810" alt="这里写图片描述" /></p>
+
+<p>例如:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>bitset&lt;16&gt; bitvec1(0xffff);          // bits 0 ... 15 are  set to 1 
+string strval("1100"); 
+bitset&lt;32&gt; bitvec4(strval); //bitvec4 的位模式中第 2 和 3 的位置为 1，其余位置都为 0。
+</code></pre>
+</div>
+
+<h3 id="bitset--对象上的操作">bitset  对象上的操作</h3>
+
+<p><img src="http://img.blog.csdn.net/20150628181749359" alt="这里写图片描述" /></p>
+
+<p>如果需要知道置为 1 的二进制位的个数，可以使用 count 操作，该操作返
+回置为 1 的二进制位的个数：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    size_t bits_set = bitvec.count(); // returns number of bit s that are 
+on 
+</code></pre>
+</div>
+
+<p>count 操作的返回类型是标准库中命名为 <strong>size_t 类型</strong>。size_t 类型定义
+在 cstddef 头文件中，该文件是 C 标准库的头文件 stddef.h 的 C++ 版本。
+它是一个与机器相关的 unsigned 类型，其大小足以保证存储内在中对象的大
+小。 
+与 vector 和 string 中的 size 操作一样，bitset 的 size 操作返
+回 bitset 对象中二进制位的个数，返回值的类型是 size_t:：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>size_t sz = bitvec.size(); // returns 32
+</code></pre>
+</div>
+
+<h3 id="访问-bitset-对象中的位">访问 bitset 对象中的位</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> // assign 1 to even numbered bits 
+     for (int index = 0; index != 32; index += 2) 
+                 bitvec[index] = 1;//或用bitvec.set(index);
+</code></pre>
+</div>
+
+<h3 id="输出二进制位">输出二进制位</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cout &lt;&lt; "bitvec2: " &lt;&lt; bitvec2 &lt;&lt; endl;
+</code></pre>
+</div>
+
+<p>输出结果为：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> bitvec2: 00000000000000001111111111111111
+</code></pre>
+</div>
+
+<p>本章疑点:
+<strong>size_t</strong><br />
+在 cstddef 头文件中定义的机器相关的无符号整型，该类型足以保存最大
+数组的长度。 在 cstddef 头文件中定义的机器相关的无符号整型，该类型足以保存最大数组的长度。</p>
+
+<p><strong>size_type</strong> <br />
+由 string 类类型和 vector 类类型定义的类型，用以保存任意 string 对象或 vecotr 对象的长度。标准库类型将 size_type 定义为 unsigned 类型。</p>
+
+<p><strong>:: operator（::操作符）</strong> <br />
+作用域操作符。::操作符在其左操作数的作用域内找到其右操作数的名
+字。用于访问某个命名空间中的名字，如 std::cout，表明名字 cout 来
+自命名空间 std。同样地，可用来从某个类取名字，如 string::size_type，
+表明 size_type 是由 string 类定义的。</p>
+
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/logo.jpg" alt="c0ks">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" > <span itemprop="author">c0ks</span></h3>
+	<p class="author-bio"></p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=c++%20primer读书笔记--第三章%20标准库类型&amp;url=http://localhost:4000/language/c++-primer-note-chapter3/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i>  Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/language/c++-primer-note-chapter3/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i>  Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/language/c++-primer-note-chapter3/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i>  Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p> <time datetime="2015-12-18T00:00:00Z" itemprop="datePublished">December 18, 2015</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="http://localhost:4000" ></a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2016 <a href="http://localhost:4000">c0ks'S TECH BLOG</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+  </body>
+
+</html>
