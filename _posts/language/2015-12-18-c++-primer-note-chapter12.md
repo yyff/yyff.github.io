@@ -6,6 +6,8 @@ categories: language
 
 > 本系列文章是关于我的c++ primer读书笔记
 
+{% include toc.html %}
+
 在 C++ 中，用类来定义自己的**抽象数据类型**（abstract data types）。通过定义类型来对应所要解决的问题中的各种概念，可以使我们更容易编写、调试和修改程序。
 
 ## 类的定义和声明

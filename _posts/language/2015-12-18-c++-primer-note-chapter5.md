@@ -6,6 +6,7 @@ categories: language
 
 > 本系列文章是关于我的c++ primer读书笔记
 
+{% include toc.html %}
 
 C++ 还支持操作符重载，允许程序员自定义用于类类型时操作符的含义。标准库正是使用这种功能定义用于库类型的操作符。
 

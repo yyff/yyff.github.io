@@ -6,6 +6,7 @@ categories: language
 
 > 本系列文章是关于我的c++ primer读书笔记
 
+{% include toc.html %}
 
 ## 命名空间的 using  声明
 使用 using 声明可以在不需要加前缀 namespace_name:: 的情况下访问命名空间中的名字。using声明的形式如下： 

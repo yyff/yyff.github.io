@@ -6,6 +6,8 @@ categories: language
 
 > 本系列文章是关于我的c++ primer读书笔记
 
+{% include toc.html %}
+
 ![顺序容器](http://img.blog.csdn.net/20150707140021305)
 
 

@@ -6,6 +6,8 @@ categories: language
 
 > 本系列文章是关于我的c++ primer读书笔记
 
+{% include toc.html %}
+
 ## 1.编译执行
 C++ 程序文件的后缀与运行的具体编译器有关。其他的形式还包括。
  prog1.cxx

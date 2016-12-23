@@ -6,6 +6,7 @@ categories: language
 
 > 本系列文章是关于我的c++ primer读书笔记
 
+{% include toc.html %}
 
 ## continue 语句
 continue 语句 导致最近的循环语句的**当次迭代提前结束**。

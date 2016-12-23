@@ -6,6 +6,8 @@ categories: language
 
 > 本系列文章是关于我的c++ primer读书笔记
 
+{% include toc.html %}
+
 前面的程序已经使用了多种 IO 标准库提供的工具： 
 •   istream（输入流）类型，提供输入操作。 
 •   ostream（输出流）类型，提供输出操作。 

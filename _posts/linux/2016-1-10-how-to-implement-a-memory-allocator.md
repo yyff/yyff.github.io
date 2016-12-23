@@ -6,6 +6,8 @@ categories: linux
 
 > USTC CSAPP LAB5
 
+{% include toc.html %}
+
 ## 一、隐式链表——首次适配
 具体请看CSAPP第九章
 

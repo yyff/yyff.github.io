@@ -4,7 +4,7 @@ title: "c0ks'S TECH BLOG"
 description: "record of my tech life..."
 logo: logo.jpg # 120x120 px default image used for Twitter summary card
 teaser: /teaser/default.jpg # 400x250 px default teaser image used in image archive grid
-locale:
+locale: en
 url:
 
 #feed:
