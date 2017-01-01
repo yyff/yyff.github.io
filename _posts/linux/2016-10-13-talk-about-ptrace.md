@@ -2,9 +2,10 @@
 layout: article
 title:  "用ptrace实现一个小型调试器"
 categories: linux
+excerpt: "本文章主要介绍linux下的系统调用ptrace，以及他如何去实现一个小型调试器"
 ---
 
-> 本文章主要介绍linux下的系统调用ptrace，以及他如何去实现一个小型调试器
+> 文章欢迎转载，但转载时请保留本段文字，并置于文章的顶部 作者：c0ks 本文原文地址：http://yyff.github.io/linux/talk-about-ptrace/
 
 {% include toc.html %}
 

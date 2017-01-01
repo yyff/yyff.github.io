@@ -2,9 +2,12 @@
 layout: article
 title:  "how to implement a memory allocator"
 categories: linux
+excerpt: "USTC CSAPP LAB5"
 ---
 
-> USTC CSAPP LAB5
+
+> 文章欢迎转载，但转载时请保留本段文字，并置于文章的顶部 作者：c0ks 本文原文地址：http://yyff.github.io/linux/how-to-implement-a-memory-allocator/
+
 
 {% include toc.html %}
 
