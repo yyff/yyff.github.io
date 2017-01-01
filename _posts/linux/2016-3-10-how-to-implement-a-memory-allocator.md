@@ -1,6 +1,6 @@
 ---
 layout: article
-title:  "how to implement a memory allocator"
+title:  "实现一个内存分配器"
 categories: linux
 excerpt: "USTC CSAPP LAB5"
 ---
