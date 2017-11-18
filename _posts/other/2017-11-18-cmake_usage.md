@@ -351,7 +351,7 @@ cmake-test
 ```
 > 解释：main.cpp依赖func.h/cpp, func.cpp依赖mymath.h/cpp
 
-该测试代码可访问：[cmake-test]({{ site.url }}/codes/cmake-test)
+该测试代码可访问：[cmake-test](https://github.com/yyff/yyff.github.io/tree/master/codes/cmake-test)
 
 
 ### CMakeLists.txt
