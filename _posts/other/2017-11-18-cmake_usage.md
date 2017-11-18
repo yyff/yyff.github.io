@@ -6,7 +6,7 @@ excerpt: "讲述跨平台构建工具cmake的基本使用"
 ---
 
 
-> 文章欢迎转载，但转载时请保留本段文字，并置于文章的顶部 作者：c0ks 本文原文地址：http://yyff.github.io/other/cmake_usage/
+> 文章欢迎转载，但转载时请保留本段文字，并置于文章的顶部 作者：c0ks 本文原文地址：https://yyff.github.io/other/cmake_usage/
 
 {% include toc.html %}
 
@@ -145,7 +145,7 @@ add_custom_command(OUTPUT output1 [output2 ...]
    
 #### 实例 (来自[5])
 
-```
+```cmake
 # 编译proto文件（使用`make proto`）
 set(PROTO_IN  news.proto)
 set(PROTO_SRC news.pb.cc)
@@ -161,7 +161,7 @@ add_custom_target(proto DEPENDS ${PROTO_OUT}) # 定义proto目标
                    
 #### 1.(2)无输出的自定义命令
 
-```
+```cmake
 add_custom_command(TARGET <target>
                    PRE_BUILD | PRE_LINK | POST_BUILD
                    COMMAND command1 [ARGS] [args1...]
@@ -170,7 +170,7 @@ add_custom_command(TARGET <target>
 
 #### 实例
 
-```
+```cmake
 # 将mymath静态库和头文件目录include拷贝到output
 # 命令中的相对路径是从cmake命令的执行路径开始的(所以'..' = ${PROJECT_SOURCE_DIR})
 add_library(mymath STATIC ${SRC_LIST})
@@ -182,7 +182,7 @@ add_custom_command(TARGET mymath
 
 #### 2.自定义target
 
-```
+```cmake
 add_custom_target(Name [ALL] [command1 [args1...]]
                   [COMMAND command2 [args2...] ...]
                   [DEPENDS depend depend depend ... ])
@@ -194,7 +194,7 @@ add_custom_target(Name [ALL] [command1 [args1...]]
 
 
 #### 3.宏定义
-```
+```cmake
 # 定义所有target的宏
 add_definitions(-DFOO -DBAR=XX ...)
 
@@ -209,7 +209,7 @@ target_compile_definitions(<target>
 ```
 
 #### 实例
-```
+```cmake
 # 定义宏_GNU_SOURCE，__STDC_LIMIT_MACROS，VERSION
 STRING(TIMESTAMP VERSION "%Y-%m-%d %H:%M")
 add_definitions(-D_GNU_SOURCE -D__STDC_LIMIT_MACROS -DVERSION=${VERSION})
@@ -217,18 +217,18 @@ add_definitions(-D_GNU_SOURCE -D__STDC_LIMIT_MACROS -DVERSION=${VERSION})
 
 
 #### 4.定义target依赖
-```
+```cmake
 add_dependencies(<target> [<target-dependency>]...)
 ```
 
 #### 实例 (来自[5])
-```
+```cmake
 add_dependencies(demo proto)
 ```
 
 
 #### 5. 定义可执行target
-```
+```cmake
 add_executable(<name>
                [EXCLUDE_FROM_ALL]
                source1 [source2 ...])
@@ -236,14 +236,14 @@ add_executable(<name>
 ```
 
 #### 6. 定义库target
-```
+```cmake
 add_library(<name> [STATIC | SHARED | MODULE]
             [EXCLUDE_FROM_ALL]
             source1 [source2 ...])            
 ```
 
 #### 7. 添加子工程目录（该目录下也有CMakeList.txt）
-```
+```cmake
 add_subdirectory(source_dir [binary_dir]
                  [EXCLUDE_FROM_ALL])
 # [binary_dir]: 子目录工程的输出目录(${PROJECT_SOURCE_DIR})                      
@@ -251,14 +251,14 @@ add_subdirectory(source_dir [binary_dir]
 
 
 #### 实例 (来自[5])
-```
+```cmake
 # 构建单测
 add_subdirectory(unittest)
 ```
 
 
 #### 8. 获取目录下的源文件
-```
+```cmake
 （1）
 aux_source_directory(<dir> <variable>)
 
@@ -267,14 +267,14 @@ file(GLOB_RECURSE <variable> [<globbing-expressions>...])
 ```
 
 #### 实例
-```
+```cmake
 aux_source_directory(./src SRC_LIST) # 只支持一个目录
 
 file(GLOB SRC_LIST ./src/*.cpp ./src/base/*.cpp) # 支持多个目录
 ```
 
 #### 9. 头文件目录
-```
+```cmake
 # 所有目标的头文件目录
 include_directories([AFTER|BEFORE] dir1 [dir2 ...])
   
@@ -288,22 +288,22 @@ target_include_directories(<target> [SYSTEM] [BEFORE]
 ```
 
 #### 实例
-```
+```cmake
 include_directories(./include ./lib/include)
 ```
 
 #### 10. 库的查找目录
-```
+```cmake
 link_directories(dir1 dir2 ...)
 ```
 
 #### 实例
-```
+```cmake
 link_directories(./lib)
 ```
 
 #### 11. 链接库
-```
+```cmake
 # 所有target的链接库(item可以是库文件名libpthread.a，库名pthread或库的完整路径名)
 link_libraries([item1 [item2 [...]]]
                [[debug|optimized|general] <item>] ...)
@@ -313,7 +313,7 @@ target_link_libraries(<target> ... <item>... ...)
 ```
 
 #### 实例
-```
+```cmake
 link_libraries(mymath pthread)
 
 # target链接
@@ -351,7 +351,7 @@ cmake-test
 ```
 > 解释：main.cpp依赖func.h/cpp, func.cpp依赖mymath.h/cpp
 
-该测试代码可访问：![cmake-test]({{ site.url }}/codes/cmake-test)
+该测试代码可访问：[cmake-test]({{ site.url }}/codes/cmake-test)
 
 
 ### CMakeLists.txt
