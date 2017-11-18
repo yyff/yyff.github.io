@@ -9,9 +9,17 @@ excerpt: "本文章主要介绍linux下的系统调用ptrace，以及他如何�
 
 {% include toc.html %}
 
+## 0x0 背景
+在个人去了解gdb实现的过程中，在网上找到了来自同一作者三篇文章[1][2][3]介绍“调试器是如何工作的”。文章[1]主要介绍了ptrace这一Linux下的系统调用（它是Linux下的调试器实现），并用`PTRACE_GETREGS`、``。文章[2]介绍了
+
+[“How debuggers work: Part 1 - Basics”](http://eli.thegreenplace.net/2011/01/23/how-debuggers-work-part-1)，作者一共写了三篇文章去介绍调试器
+
+
 ## PTRACE
 这个系统调用在Pradeep Padala在linux journal上的两篇博文[《Playing with ptrace》](http://www.linuxjournal.com/article/6100?page=0,0)发表后开始被大家熟知，文章中用各种例子介绍了ptrace如何查看和修改进程的内存映像。后来ptrace还被安全人员应用于注入+API Hook，感兴趣的同学可以看看古河在看雪论坛发表的[文章](http://bbs.pediy.com/showthread.php?t=141355)。
 
+
+## 北京
 
 简单来说，ptrace提供了一种使进程得以监视和控制其它进程的方式，它还能够改变其他进程中的寄存器和内核映像，因此其主要用来实现断点调试和系统调用的跟踪。
 

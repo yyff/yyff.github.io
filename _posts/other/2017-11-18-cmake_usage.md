@@ -227,7 +227,7 @@ add_dependencies(demo proto)
 ```
 
 
-#### 5. 定义可执行target
+#### 5. 可执行目标
 ```cmake
 add_executable(<name>
                [EXCLUDE_FROM_ALL]
@@ -235,18 +235,20 @@ add_executable(<name>
 # EXCLUDE_FROM_ALL: 从默认target中移除，即make不执行该target            
 ```
 
-#### 6. 定义库target
+#### 6. 库target
 ```cmake
 add_library(<name> [STATIC | SHARED | MODULE]
             [EXCLUDE_FROM_ALL]
-            source1 [source2 ...])            
+            source1 [source2 ...])
+            
 ```
 
 #### 7. 添加子工程目录（该目录下也有CMakeList.txt）
 ```cmake
 add_subdirectory(source_dir [binary_dir]
                  [EXCLUDE_FROM_ALL])
-# [binary_dir]: 子目录工程的输出目录(${PROJECT_SOURCE_DIR})                      
+# [binary_dir]: 子目录工程的输出目录(${PROJECT_SOURCE_DIR})  
+                    
 ```
 
 
@@ -335,44 +337,53 @@ target_link_libraries(demo pthread)
 
 ### 项目目录
 ```
-cmake-test
-├── CMakeLists.txt
+.
+├── bin
 ├── build
+├── CMakeLists.txt
 ├── include
 │   └── func.h
+├── src
+│   ├── func.cpp
+│   └── main.cpp
 ├── lib
 │   ├── include
 │   │   └── mymath.h
 │   ├── libmymath.a
-└── src
-    ├── func.cpp
-    └── main.cpp
+│   └── mymath.cpp
+└── unittest
+    ├── bin
+    ├── build
+    ├── CMakeLists.txt
+    └── test_func.cpp
 
 ```
-> 解释：main.cpp依赖func.h/cpp, func.cpp依赖mymath.h/cpp
+> 解释：main.cpp依赖func.h/cpp, func.cpp依赖mymath.h/cpp，test_func.cpp依赖func.h/cpp
 
-该测试代码可访问：[cmake-test](https://github.com/yyff/yyff.github.io/tree/master/codes/cmake-test)
+该测试代码可访问：[cmake_demo](https://github.com/yyff/yyff.github.io/tree/master/codes/cmake_demo)
 
 
-### CMakeLists.txt
+### 项目CMakeLists.txt
 
 ```cmake
-# 版本限定
+# 版本限定 
 cmake_minimum_required(VERSION 2.8)
 
-# 项目名称
-project(cmake-demo)
+# 项目名称 
+project(cmake_demo) 
 
 # 预处理参数
 string(TIMESTAMP VERSION "%Y-%m-%d %H:%M")
 add_definitions(-D_GNU_SOURCE -D__STDC_LIMIT_MACROS -DVERSION=${VERSION})
 
 # 编译器选项
-set(CMAKE_C_FLAGS "-g -pipe -W -Wall -fPIC -O2")
-set(CMAKE_CXX_FLAGS "-g -pipe -W -Wall -fPIC -O2")
+set(CMAKE_C_FLAGS "-g -pipe -W -Wall -fPIC -O2") 
+set(CMAKE_CXX_FLAGS "-g -pipe -W -Wall -fPIC -O2") 
 
+# link_directories相对路径和其他命令相对路径保持一致
+cmake_policy(SET CMP0015 NEW) 
 # 依赖库路径
-link_directories(${PROJECT_SOURCE_DIR}/lib)
+link_directories(./lib)
 # 依赖库
 link_libraries(mymath)
 
@@ -388,13 +399,71 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 
 # 动态库
-#add_library(test SHARED ${SRC_LIST})
+#add_library(cmake_demo_lib SHARED ${SRC_LIST}) 
 # 静态库
-#add_library(cmake-demo-lib STATIC ${SRC_LIST})
+#add_library(cmake_demo_lib STATIC ${SRC_LIST})
 # 可执行程序
-add_executable(cmkae-demo ${SRC_LIST})
+add_executable(cmkae_demo ${SRC_LIST})
 ```
 
+### 测试CMakeLists.txt
+```cmake
+# 版本限定 
+cmake_minimum_required(VERSION 2.8)
+
+# 项目名称 
+project(cmake-demo-ut) 
+
+# 预处理参数
+string(TIMESTAMP VERSION "%Y-%m-%d %H:%M")
+add_definitions(-D_GNU_SOURCE -D__STDC_LIMIT_MACROS -DVERSION=${VERSION})
+
+# 编译器选项
+set(CMAKE_C_FLAGS "-g -pipe -W -Wall -fPIC -O2") 
+set(CMAKE_CXX_FLAGS "-g -pipe -W -Wall -fPIC -O2") 
+
+# 依赖库路径
+cmake_policy(SET CMP0015 NEW)
+link_directories(../lib ./)
+# 依赖库
+link_libraries(pthread mymath gtest gtest_main)
+
+# 头文件目录
+include_directories(../include ../lib/include)
+
+# 源文件
+file(GLOB SRC_LIST ../src/*.cpp)
+# 删除源文件中的main.cpp
+foreach(src ${SRC_LIST})
+    string(FIND ${src} main.cpp out) # 未找到返回-1
+    if (NOT ${out} EQUAL -1)
+        list(REMOVE_ITEM SRC_LIST ${src})
+    endif()
+endforeach()
+
+# 设置可执行程序输出路径
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+# 设置库输出路径
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
+
+# 动态库
+#add_library(cmake_demo_lib SHARED ${SRC_LIST}) 
+# 静态库，使用set_target_properties改变target输出名
+add_library(cmake_demo_lib STATIC ${SRC_LIST})
+set_target_properties(cmake_demo_lib PROPERTIES OUTPUT_NAME "cmake_demo") 
+# 可执行程序
+#add_executable(cmkae_demo ${SRC_LIST})
+
+# unittest
+file(GLOB UT_SRC_LIST ./*.cpp)
+foreach(ut ${UT_SRC_LIST})
+    get_filename_component(file_name ${ut} NAME_WE)
+    add_executable(${file_name} ${ut})
+    add_dependencies(${file_name} cmake_demo_lib)
+    target_link_libraries(${file_name} cmake_demo_lib) # 要用target名而不是lib文件名
+endforeach()
+
+```
 
 
 ## 0x7 参考

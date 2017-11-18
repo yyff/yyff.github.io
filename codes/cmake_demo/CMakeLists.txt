@@ -12,8 +12,10 @@ add_definitions(-D_GNU_SOURCE -D__STDC_LIMIT_MACROS -DVERSION=${VERSION})
 set(CMAKE_C_FLAGS "-g -pipe -W -Wall -fPIC -O2") 
 set(CMAKE_CXX_FLAGS "-g -pipe -W -Wall -fPIC -O2") 
 
+# link_directories相对路径和其他命令相对路径保持一致
+cmake_policy(SET CMP0015 NEW) 
 # 依赖库路径
-link_directories(${PROJECT_SOURCE_DIR}/lib)
+link_directories(./lib)
 # 依赖库
 link_libraries(mymath)
 
@@ -29,10 +31,9 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 
 # 动态库
-#add_library(test SHARED ${SRC_LIST}) 
+#add_library(cmake_demo_lib SHARED ${SRC_LIST}) 
 # 静态库
-#add_library(cmake-demo-lib STATIC ${SRC_LIST})
+#add_library(cmake_demo_lib STATIC ${SRC_LIST})
 # 可执行程序
-add_executable(cmkae-demo ${SRC_LIST})
-
+add_executable(cmkae_demo ${SRC_LIST})
 
