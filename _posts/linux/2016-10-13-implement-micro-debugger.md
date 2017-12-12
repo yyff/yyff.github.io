@@ -1,6 +1,6 @@
 ---
 layout: article
-title:  "用ptrace实现一个小型调试器"
+title:  "实现一个微型调试器"
 categories: linux
 excerpt: "本文章主要介绍linux下的系统调用ptrace，以及他如何去实现一个小型调试器"
 ---
@@ -9,11 +9,12 @@ excerpt: "本文章主要介绍linux下的系统调用ptrace，以及他如何�
 
 {% include toc.html %}
 
-# 实现可调试汇编代码的小型调试器
+# 实现一个微型调试器
 
 ## 0x1 背景
 在了解GDB实现的过程中，本人在网上发现（by Google）了一篇写得很好的文章：“How debuggers work”，作者是Eli Bendersky。文章由三部分组成，第一部分介绍了ptrace系统调用（Linux下的调试器实现最核心的元素）并使用它编写了demo：父进程单步跟踪子进程并打印子进程的eip寄存器内容，其中用到了`PTRACE_TRACEME`、`PTRACE_SINGLESTEP `和`PTRACE_PEEKTEXT`这三个ptrace请求类型（ptrace函数的第一个参数，代表ptrace调用的行为）；第二部分介绍了断点的实现：通过将被追踪进程（tracee）的断点处指令替换成`int 3`使其执行到断点处时进入`STOP`状态，并且其会向追踪者（父进程）发送`SIGTRAP`信号。第三部分介绍了存在Linux可执行文件（ELF格式）中的调试信息。因为前两部分介绍的调试只是针对于汇编/机器指令的，想要调试C/C++代码，需要用到存在于可执行文件中的调式信息。这些信息按照一定的格式（DWARF）存储并支持通过函数获取，信息记录了高层语言到汇编/机器语言的映射，比如：c程序代码的行号、函数、语句对应的汇编指令位置，变量所在的内存位置等[1][2][3]。
-看完这个系列的文章后，基本就了解了实现GDB所需的技术。但毕竟是“纸上得来”，因此本人也动手实践了一个可调试汇编代码的小型调试器来加深理解，下文将介绍该小型调试器的实现。
+
+看完这个系列的文章后，基本就了解了实现GDB所需的技术。但毕竟是“纸上得来”，因此本人也动手实践了一个可调试汇编代码的微型调试器来加深理解，下文将介绍该微型调试器的实现。
 
 
 
@@ -105,17 +106,17 @@ private:
 
 ```cpp
 	
-    child_pid = fork();
-    if (child_pid == 0) { 			// user program, tracee.
-    	ptrace(PTRACE_TRACEME...) 	// let child process go into "T" state
-		execl(program_file...)		// execute user program 
-	}
-	// debugger, tracer.
-   wait(...); 				// wait for signal from tracee 
-   while (1) {
-		get_command(); 		// get input from stdin and parse it
-		handle_command(); 	// handle command to operate tracee
-   }
+child_pid = fork();
+if (child_pid == 0) { 			// user program, tracee.
+	ptrace(PTRACE_TRACEME...) 	// let child process go into "T" state
+	execl(program_file...)		// execute user program 
+}
+// debugger, tracer.
+wait(...); 				// wait for signal from tracee 
+while (1) {
+	get_command(); 		// get input from stdin and parse it
+	handle_command(); 	// handle command to operate tracee
+}
 
 ```
 
@@ -138,10 +139,10 @@ private:
 设置断点方法`set_breakpoint()`的伪代码如下：
 
 ```cpp
-	// set breakpoint in addr
-	data = ptrace(PTRACE_PEEKTEXT, addr...); // get data from addr
-	ptrace(PTRACE_POKETEXT, addr, 0xcc...);  // cover data in addr with instr '0xcc'
-	save_data(addr, data);   // save pair "addr-data" 
+// set breakpoint in addr
+data = ptrace(PTRACE_PEEKTEXT, addr...); // get data from addr
+ptrace(PTRACE_POKETEXT, addr, 0xcc...);  // cover data in addr with instr '0xcc'
+save_data(addr, data);   // save pair "addr-data" 
 ```
 
 #### 继续运行(c / continue)
@@ -154,15 +155,15 @@ private:
 继续运行方法`continue_run()`的伪代码如下：
 
 ```cpp
-    ptrace(PTRACE_CONT, child_pid, ...);
-    waitpid(child_pid...); // wait for signal: SIG_EXIT or SIG_TRAP...
-    if (signal == SIG_EXIT) {
-        exit();
-    }
+ptrace(PTRACE_CONT, child_pid, ...);
+waitpid(child_pid...); // wait for signal: SIG_EXIT or SIG_TRAP...
+if (signal == SIG_EXIT) {
+    exit();
+}
     
-    if (has_breakpoint()) { 
-        disable_breakpoint(); // recover from breakpoint
-    }
+if (has_breakpoint()) { 
+    disable_breakpoint(); // recover from breakpoint
+}
 ```
 
 #### 单步指令ni
@@ -172,14 +173,13 @@ private:
 单步指令方法`exec_next_instr()`的伪代码如下：
 
 ```
-	if(has_breakpoint()) {
-        disable_breakpoint();
-    }
-    long orig_eip = get_eip(); // get current instr address of tracee process 
-    instr = ptrace(PTRACE_PEEKTEXT, child_pid, orig_eip...); // get instr
-    ptrace(PTRACE_SINGLESTEP, child_pid...);  // execute single step
-    print(instr);	// print executed instr 
-    
+if(has_breakpoint()) {
+    disable_breakpoint();
+}
+long orig_eip = get_eip(); // get current instr address of tracee process 
+instr = ptrace(PTRACE_PEEKTEXT, child_pid, orig_eip...); // get instr
+ptrace(PTRACE_SINGLESTEP, child_pid...);  // execute single step
+print(instr);	// print executed instr    
 ```
 
 #### 打印值(p / print)
@@ -203,8 +203,8 @@ data = ptrace(PTRACE_PEEKTEXT, child_pid, addr...);
 打印寄存器信息方法`print_regs()`的伪代码为：
 
 ```cpp
-    ptrace(PTRACE_GETREGS, child_pid, &regs...);
-    print regs.eax, regs.ebx, regs.ecx, regs.eip...
+ptrace(PTRACE_GETREGS, child_pid, &regs...);
+print regs.eax, regs.ebx, regs.ecx, regs.eip...
 ```    
 
 
