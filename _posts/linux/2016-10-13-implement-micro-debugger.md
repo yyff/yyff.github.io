@@ -88,8 +88,8 @@ PTRACE_SYSCALL和PTRACE_SINGLESTEP：追踪下一个系统调用或指令
 ```c++
 /* 
 usage：
-	Debugger debugger(program_name);
-	debugger.run();
+    Debugger debugger(program_name);
+    debugger.run();
 */
 
 class Debugger{
@@ -97,7 +97,7 @@ public:
     Debugger(const char* name); // 被调试的二进制程序文件名
     int run(); // 运行调试器，接收命令并处理
 private:
-	//...
+    //...
 };
 ```
 
@@ -105,17 +105,17 @@ private:
 该方法的功能为：同时启动（fork & exec）被调试程序和调试器程序：使被调试进程处于暂停状态（也就是T状态，见2.1），等待来自调试进程的操作；调试器进程等待接收来自标准输入的命令，解析后执行命令操作被调试进程。该过程的伪代码如下：
 
 ```cpp
-	
+    
 child_pid = fork();
-if (child_pid == 0) { 			// user program, tracee.
-	ptrace(PTRACE_TRACEME...) 	// let child process go into "T" state
-	execl(program_file...)		// execute user program 
+if (child_pid == 0) {           // user program, tracee.
+    ptrace(PTRACE_TRACEME...)   // let child process go into "T" state
+    execl(program_file...)      // execute user program 
 }
 // debugger, tracer.
-wait(...); 				// wait for signal from tracee 
+wait(...);              // wait for signal from tracee 
 while (1) {
-	get_command(); 		// get input from stdin and parse it
-	handle_command(); 	// handle command to operate tracee
+    get_command();      // get input from stdin and parse it
+    handle_command();   // handle command to operate tracee
 }
 
 ```
@@ -179,7 +179,7 @@ if(has_breakpoint()) {
 long orig_eip = get_eip(); // get current instr address of tracee process 
 instr = ptrace(PTRACE_PEEKTEXT, child_pid, orig_eip...); // get instr
 ptrace(PTRACE_SINGLESTEP, child_pid...);  // execute single step
-print(instr);	// print executed instr    
+print(instr);   // print executed instr    
 ```
 
 #### 打印值(p / print)
@@ -217,8 +217,8 @@ hello.c:
 ```c
 #include <stdio.h>
 int main(){
-	printf("hello\n");
-	return 0;
+    printf("hello\n");
+    return 0;
 }
 ```
 hello.s:
