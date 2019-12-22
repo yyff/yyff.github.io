@@ -18,13 +18,13 @@ email: yangfan036@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://yyff.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "http://fyang.org" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: _wayneyang
 #github_username:  yyff
 disqus:
   shortname: yyff
 show_excerpts: true
-google_analytics: UA-NNNNNNNN-N
+#google_analytics: UA-NNNNNNNN-N
 
 # Build settings
 markdown: kramdown
