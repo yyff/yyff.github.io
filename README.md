@@ -1,2 +1,1 @@
-# [传送门](http://yyff.github.io)
-
+# simple_jekyll_sites

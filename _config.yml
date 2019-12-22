@@ -1,72 +1,75 @@
-# Site wide configuration
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
 
-title: "c0ks'S TECH BLOG"
-description: "record of my tech life..."
-logo: logo.jpg # 120x120 px default image used for Twitter summary card
-teaser: /teaser/default.jpg # 400x250 px default teaser image used in image archive grid
-locale: en
-url:
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+title: "自由生长"
+email: yangfan036@gmail.com
+description: >- # this means to ignore newlines until "baseurl:"
+  竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "yyff.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+#twitter_username: _wayneyang
+#github_username:  yyff
+disqus:
+  shortname: yyff
+show_excerpts: true
+google_analytics: UA-NNNNNNNN-N
 
-#feed:
-#  path: atom.xml
-default:
-    -
-        scope:
-            type: "article"
-        values:
-            ads: false
-            toc: false 
-
-# Jekyll configuration
-
-sass:
-  sass_dir: _sass
-  style: compressed
-permalink: /:categories/:title/
-kramdown:
-  toc_levels: 1..2
-highlighter: rouge
-gems:
-  - jekyll-sitemap
-  - jekyll-gist
+# Build settings
+markdown: kramdown
+#theme: minima
+plugins:
   - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
 
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
 
-# Site owner
-owner:
-  name: c0ks
-  email: yangfan036@gmail.com
-  twitter:
-  google:
-    ad-client:
-    ad-slot:
-  bio:
-  avatar: logo.jpg # 160x160 px image for author byline
-  disqus-shortname:
+minima:
+  date_format: "%b %-d, %Y"
 
+  # generate social links in footer
+  social_links:
+    github: yyff 
+    #rss: rss
+    # dribbble: jekyll
+    # facebook: jekyll
+    # flickr:   jekyll
+    # instagram: jekyll
+    # linkedin: jekyll
+    # pinterest: jekyll
+    # youtube: jekyll
+    # youtube_channel: UC8CXR0-3I70i1tfPg1PAE1g
+    # youtube_channel_name: CloudCannon
+    # telegram: jekyll
+    # googleplus: +jekyll
+    # microdotblog: jekyll
+    # keybase: jekyll
 
-include:
-  - .htaccess
-exclude:
-  - "*.less"
-  - "*.sublime-project"
-  - "*.sublime-workspace"
-  - .asset-cache
-  - .bundle
-  - .jekyll-assets-cache
-  - .sass-cache
-  - CHANGELOG
-  - Capfile
-  - Gemfile
-  - Gruntfile.js
-  - LICENSE
-  - README
-  - Rakefile
-  - config
-  - gulpfile.js
-  - lib
-  - log
-  - node_modules
-  - package.json
-  - spec
-  - tmp
+    # Mastodon instances
+    # mastodon:
+    # - username: jekyll
+    #   instance: example.com
+    # - username: jekyll2
+    #   instance: example.com
