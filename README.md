@@ -1,1 +1,1 @@
-# simple_jekyll_sites
+This repository is about my blogs. http://fyang.org
