@@ -5,7 +5,7 @@ categories: tech
 tags: Elasticsearch hadoop
 ---
 
-
+本文介绍了ES-hadoop插件实现和使用。
 
 ## 1. 介绍
 

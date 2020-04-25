@@ -7,7 +7,7 @@ tags: Elasticsearch
 
 
 
-在我的上篇文章"在ES API中运行脚本？ES 脚本介绍"中，介绍了ES 脚本的基本概念和使用，而本文将基于ES 6.4版本对其内部实现做一个分析。
+在我的上篇文章"在ES API中运行脚本？ES 脚本介绍"中，介绍了ES 脚本的基本概念和使用，而本文将对其内部实现做一个分析。
 
 在分析前，我们先来看一个在ES [update API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html)中使用脚本文档进行更新的例子：
 

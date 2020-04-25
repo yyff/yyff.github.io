@@ -5,7 +5,7 @@ categories: tech
 tags: Elasticsearch
 ---
 
-
+本文对ES 脚本进行了基本的介绍。
 
 ## 1. 介绍
 

@@ -2,10 +2,10 @@
 layout: post
 title:  "filebeat源码解析"
 categories: tech
-tags: Elasticsearch
+tags: Elasticsearch filebeat
 ---
 
-
+本文对ELK中的重要成员filebeat的源码实现进行了分析介绍。
 
 # 背景
 
